@@ -1,6 +1,7 @@
 const express = require("express");
 const candidateController = require("../controllers/candidate.controller");
-const router = express.router;
+const router = express.Router();
+
 const {
   applyJob,
   cancelJob,

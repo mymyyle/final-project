@@ -1,6 +1,7 @@
 const express = require("express");
 const commentController = require("../controllers/comment.controller");
-const router = express.router;
+const router = express.Router();
+
 const {
   createComment,
   editComment,

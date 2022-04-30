@@ -5,8 +5,22 @@ const jobSchema = Schema(
   {
     authorId: { type: Schema.Types.ObjectId, ref: "Users", required: true },
     name: { type: String, required: true },
-    type: { type: String, required: true },
-    category: { type: String, required: true },
+    type: {
+      type: String,
+      enum: ["fulltime", "part time", "temporary"],
+      required: true,
+    },
+    category: {
+      type: String,
+      enum: [
+        "environment",
+        "education",
+        "health",
+        "agriculture",
+        "wildlife protection",
+      ],
+      required: true,
+    },
     description: { type: String, required: true },
     location: { type: String, required: true },
     imgUrl: { type: String },
