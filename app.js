@@ -9,7 +9,6 @@ const mongoose = require("mongoose");
 const mongoURI = process.env.MONGO_DEV_URI;
 
 const indexRouter = require("./routes/index");
-const usersRouter = require("./routes/users");
 
 const app = express();
 
@@ -26,6 +25,5 @@ mongoose
   .catch((err) => console.log(err));
 
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
 
 module.exports = app;

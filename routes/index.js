@@ -1,9 +1,16 @@
-var express = require('express');
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+const userRouter = require("./user.api");
+router.use("/user", userRouter);
+
+const jobRouter = require("./job.api");
+router.use("/job", jobRouter);
+
+const commentRouter = require("./comment.api");
+router.use("/comment", commentRouter);
+
+const candidateRouter = require("./candidate.api");
+router.use("/candidate", candidateRouter);
 
 module.exports = router;
