@@ -6,7 +6,6 @@ const authMiddleware = {};
 authMiddleware.loginRequired = (req, res, next) => {
   try {
     const tokenString = req.headers.authorization;
-    console.log(`=======>`, tokenString);
     if (!tokenString)
       throwError(401, "Token is missing", "Login required error");
     const token = tokenString.replace("Bearer ", "");

@@ -7,7 +7,7 @@ const jobSchema = Schema(
     name: { type: String, required: true },
     type: {
       type: String,
-      enum: ["fulltime", "part time", "temporary"],
+      enum: ["fulltime", "parttime", "temporary"],
       required: true,
     },
     category: {
@@ -25,8 +25,8 @@ const jobSchema = Schema(
     location: { type: String, required: true },
     imgUrl: { type: String },
     detailedInformation: { type: String, required: true },
-    isDeleted: { type: String, default: false }, //??????
-    status: { type: String, enum: ["done", "ongoing"] },
+    isDeleted: { type: String, default: false },
+    status: { type: String, enum: ["done", "ongoing"], default: "ongoing" },
   },
   {
     timestamp: true,
@@ -34,13 +34,13 @@ const jobSchema = Schema(
 );
 
 jobSchema.methods.toJSON = function () {
-  const obj = this._id;
+  const obj = this._doc;
   delete obj.isDeleted;
   return obj;
 };
 
-const Job = Schema.model("Jobs", jobSchema);
-module.export = Job;
+const Job = mongoose.model("Jobs", jobSchema);
+module.exports = Job;
 // _jobId:
 // authorId:
 // name:

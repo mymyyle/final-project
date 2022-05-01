@@ -25,7 +25,7 @@ const candidateSchema = Schema(
   }
 );
 
-const Candidate = Schema.model("Candidates", candidateSchema);
+const Candidate = mongoose.model("Candidates", candidateSchema);
 module.exports = Candidate;
 
 // _candidateId:

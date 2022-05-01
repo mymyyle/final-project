@@ -4,7 +4,7 @@ const { sendResponse, catchAsync } = require("../helpers/utils");
 // 1. User can create a comment to job post
 commentController.createComment = catchAsync(async (req, res, next) => {});
 
-// 2. Author of Comment can update that comment
+// 2. Author of Comment can update that comment:  isEdit:true
 commentController.editComment = catchAsync(async (req, res, next) => {});
 
 // 3. Author of Comment can delete that comment

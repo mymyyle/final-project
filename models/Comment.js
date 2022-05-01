@@ -22,7 +22,7 @@ const commentSchema = Schema(
   }
 );
 
-const Comment = Schema.model("Comments", commentSchema);
+const Comment = mongoose.model("Comments", commentSchema);
 module.exports = Comment;
 
 // _commentId:

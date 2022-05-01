@@ -16,8 +16,8 @@ router.put("/update/:id", editComment);
 
 router.delete("/delete/:id", deleteComment);
 
-router.put("/:id", replyCommentByEmployer);
-
 router.get("/all/:jobId", getAllCommentByJobId);
+
+router.put("/:id", replyCommentByEmployer);
 
 module.exports = router;
