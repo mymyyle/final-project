@@ -141,7 +141,6 @@ jobController.getJobByAuthorId = catchAsync(async (req, res, next) => {
   const count = await Job.countDocuments(filterCriteria);
   const totalPage = Math.ceil(count / limit);
   const offset = limit * (page - 1);
-  // .sort({ createAt: -1 })
   const sort = filter.sort === "decs" ? 1 : -1;
   const jobList = await Job.find(filterCriteria)
     .sort({ createAt: sort })

@@ -1,23 +1,153 @@
 const commentController = {};
-const { sendResponse, catchAsync } = require("../helpers/utils");
+const { sendResponse, catchAsync, throwError } = require("../helpers/utils");
+const { find } = require("../models/Comment");
+const Comment = require("../models/Comment");
+const Job = require("../models/Job");
 
 // 1. User can create a comment to job post
-commentController.createComment = catchAsync(async (req, res, next) => {});
+commentController.createComment = catchAsync(async (req, res, next) => {
+  const { jobId } = req.params;
+  const job = await Job.findOne({ _id: jobId, isDeleted: false });
+  if (!job) throwError(404, "job id not found", "create comment error");
+
+  const { currentUserId } = req;
+  const { content } = req.body;
+  if (!content) throwError(400, "missing content", "create comment error");
+  const newComment = await Comment.create({
+    jobId,
+    authorCommentId: currentUserId,
+    content,
+    reply: "",
+  });
+  return sendResponse(
+    res,
+    200,
+    true,
+    newComment,
+    null,
+    "create comment successful"
+  );
+});
 
 // 2. Author of Comment can update that comment:  isEdit:true
-commentController.editComment = catchAsync(async (req, res, next) => {});
+commentController.editComment = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+  const { currentUserId } = req;
+
+  const comment = await Comment.findOne({
+    _id: id,
+    authorCommentId: currentUserId,
+  });
+  if (!comment)
+    throwError(
+      404,
+      "comment of this account is not found",
+      "edit comment error"
+    );
+  const { content } = req.body;
+  if (!content) throwError(400, "missing content", "edit comment error");
+  comment.content = content;
+  comment.isEdited = true;
+  await comment.save();
+  return sendResponse(res, 200, true, comment, null, "edit comment successful");
+});
 
 // 3. Author of Comment can delete that comment
-commentController.deleteComment = catchAsync(async (req, res, next) => {});
+commentController.deleteComment = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+  const { currentUserId } = req;
+  const comment = await Comment.findOne({
+    _id: id,
+    authorCommentId: currentUserId,
+  });
+  if (!comment)
+    throwError(
+      404,
+      "comment of this account is not found",
+      "delete comment error"
+    );
+  await Comment.deleteOne(comment);
+  return sendResponse(
+    res,
+    200,
+    true,
+    comment,
+    null,
+    "delete comment successful"
+  );
+});
 
 // 4. Employer can reply comment
 commentController.replyCommentByEmployer = catchAsync(
-  async (req, res, next) => {}
+  async (req, res, next) => {
+    const { id } = req.params;
+    const comment = await Comment.findOne({
+      _id: id,
+    });
+    if (!comment) throwError(404, "comment not found", "reply comment error");
+
+    const job = await Job.findOne({ _id: comment.jobId, isDeleted: false });
+    if (!job)
+      throwError(404, "job contains comment not found", "reply comment error");
+
+    const { currentUserId } = req;
+    if (!job.authorId.equals(currentUserId))
+      throwError(401, "only job's author can reply  ", "reply comment error");
+
+    const { reply } = req.body;
+    if (!reply) throwError(400, "missing reply content", "reply comment error");
+    comment.reply = reply;
+    await comment.save();
+    return sendResponse(
+      res,
+      200,
+      true,
+      comment,
+      null,
+      "reply comment successful"
+    );
+  }
 );
 
 // 5. user can see comment (not login required)
-commentController.getAllCommentByJobId = catchAsync(
-  async (req, res, next) => {}
-);
+commentController.getAllCommentByJobId = catchAsync(async (req, res, next) => {
+  const { jobId } = req.params;
+  const job = await Job.findOne({ _id: jobId, isDeleted: false });
+  if (!job) throwError(404, "job not found", "get all comment by job id error");
+
+  let commentList = await Comment.find({ jobId });
+  if (!commentList.length)
+    throwError(
+      404,
+      "job doesn't have comment ",
+      "get all comment by job id error"
+    );
+
+  let { page, limit, sort, reply } = req.query;
+  page = parseInt(page) || 1;
+  limit = parseInt(limit) || 5;
+  sort = sort === "decs" ? 1 : -1;
+
+  const filterCriteria =
+    reply === "missing" ? { $and: [{ jobId }, { reply: "" }] } : { jobId };
+
+  const count = commentList.length;
+  const totalPage = Math.ceil(count / limit);
+
+  const offset = limit * (page - 1);
+
+  commentList = await Comment.find(filterCriteria)
+    .sort({ createAt: sort })
+    .skip(offset)
+    .limit(limit);
+  return sendResponse(
+    res,
+    200,
+    true,
+    { commentList, totalPage },
+    null,
+    "get all comment by job id successful"
+  );
+});
 
 module.exports = commentController;

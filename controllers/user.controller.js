@@ -44,7 +44,7 @@ userController.login = catchAsync(async (req, res, next) => {
   if (!password || !email) {
     throwError(400, "Missing info", "Login error");
   }
-  const user = await User.findOne({ email }, "+password");
+  const user = await User.findOne({ email, isDeleted: false }, "+password");
   if (!user) throwError(400, "User not found", "login error");
 
   const isMatch = await bcrypt.compare(password, user.password);
@@ -119,7 +119,11 @@ userController.updateAccount = catchAsync(async (req, res, next) => {
 // 6. Owner can deactivate own account
 userController.deactivateAccount = catchAsync(async (req, res, next) => {
   const { currentUserId } = req;
-  let user = await User.findOne({ _id: currentUserId }, "+isDeleted");
+  let user = await User.findOne(
+    { _id: currentUserId, isDeleted: false },
+    "+isDeleted"
+  );
+  if (!user) throwError(404, "User not found", "deactivate Account error");
   user.isDeleted = true;
   await user.save();
 

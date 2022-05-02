@@ -25,7 +25,7 @@ mongoose
 app.use("/", indexRouter);
 
 app.use((req, res, next) => {
-  const err = new Error("Not Found");
+  const err = new Error("Page Not Found");
   err.statusCode = 404;
   err.isOperational = true;
   next(err);

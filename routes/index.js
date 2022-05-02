@@ -7,10 +7,10 @@ router.use("/user", userRouter);
 const jobRouter = require("./job.api");
 router.use("/job", jobRouter);
 
-const commentRouter = require("./comment.api");
+const commentRouter = require("./comment.api.js");
 router.use("/comment", commentRouter);
 
-const candidateRouter = require("./candidate.api");
-router.use("/candidate", candidateRouter);
+const applicationRouter = require("./application.api");
+router.use("/application", applicationRouter);
 
 module.exports = router;

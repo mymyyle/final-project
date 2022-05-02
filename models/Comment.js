@@ -14,7 +14,7 @@ const commentSchema = Schema(
       required: true,
     },
     content: { type: String, required: true },
-    reply: { type: String, required: true },
+    reply: { type: String },
     isEdited: { type: Boolean, default: false },
   },
   {
