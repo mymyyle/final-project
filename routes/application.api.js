@@ -7,20 +7,18 @@ const {
   applyJob,
   cancelJob,
   getAllApplicationsByJobId,
-  acceptRequest,
-  getAcceptedListByJobId,
+  respondRequest,
+  getAllOwnJobApplication,
 } = applicationController;
 
 router.put("/apply/:jobId", loginRequired, applyJob);
 
 router.delete("/cancel/:jobId", loginRequired, cancelJob);
 
-router.get("/applications/:jobId", loginRequired, getAllApplicationsByJobId);
+router.put("/respond/:jobId", loginRequired, respondRequest);
 
-router.get("/me/accept/:jobId", loginRequired, getAcceptedListByJobId);
+router.get("/me", loginRequired, getAllOwnJobApplication);
 
-// req.body {userId in applications}
-//employer
-router.put("/:jobId", loginRequired, acceptRequest);
+router.get("/:jobId", loginRequired, getAllApplicationsByJobId);
 
 module.exports = router;
