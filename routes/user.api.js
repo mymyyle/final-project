@@ -1,13 +1,21 @@
 const express = require("express");
 const userController = require("../controllers/user.controller");
 const router = express.Router();
-const { register, login, getSingleUserById, updateAccount, deactivateAccount } =
-  userController;
+const {
+  register,
+  login,
+  getSingleUserById,
+  updateAccount,
+  deactivateAccount,
+  getUserByAccessToken,
+} = userController;
 const { loginRequired } = require("../middlewares/authentication");
 
 router.post("/register", register);
 
 router.post("/login", login);
+
+router.get("/me", loginRequired, getUserByAccessToken);
 
 router.get("/:id", getSingleUserById);
 

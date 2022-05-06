@@ -137,4 +137,18 @@ userController.deactivateAccount = catchAsync(async (req, res, next) => {
   );
 });
 
+userController.getUserByAccessToken = catchAsync(async (req, res, next) => {
+  const { currentUserId } = req;
+  let user = await User.findOne({ _id: currentUserId, isDeleted: false });
+  if (!user) throwError(404, "User not found", "deactivate Account error");
+  return sendResponse(
+    res,
+    200,
+    true,
+    user,
+    null,
+    "get user by access token successful"
+  );
+});
+
 module.exports = userController;
