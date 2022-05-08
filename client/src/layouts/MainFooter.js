@@ -24,7 +24,7 @@ const MainFooter = () => {
           <p>
             {/* We send weekly to quarterly emails about volunteer management tips
             and tricks, general events, and more! */}
-            Stay in the loop on the latest news and updates on all things
+            Stay in the loop on the latest news and updates on all things.
           </p>
           <form>
             <input type="email" placeholder="Enter Email..." />
@@ -55,9 +55,8 @@ const MainFooter = () => {
         <div>
           <h2>Join Our Team</h2>
           <p>
-            The VolunCheers team of employees believes in the power of
-            volunteerism, and we love helping people finding meaningful ways to
-            give back.
+            The VolunCheers team believes in the power of volunteerism, and we
+            love helping people finding meaningful ways to give back.
           </p>
           <a href="#" className="btn btn-secondary">
             Join Now

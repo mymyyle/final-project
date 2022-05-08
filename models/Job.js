@@ -7,17 +7,17 @@ const jobSchema = Schema(
     name: { type: String, required: true },
     type: {
       type: String,
-      enum: ["fulltime", "parttime", "temporary"],
+      enum: ["Full time", "Part time", "Temporary"],
       required: true,
     },
     category: {
       type: String,
       enum: [
-        "environment",
-        "education",
-        "health",
-        "agriculture",
-        "wildlife protection",
+        "Community",
+        "Environment",
+        "Health care",
+        "Sports",
+        "Wildlife Protection",
       ],
       required: true,
     },
@@ -25,7 +25,8 @@ const jobSchema = Schema(
     location: { type: String, required: true },
     imgUrl: { type: String },
     detailedInformation: { type: String, required: true },
-    isDeleted: { type: String, default: false },
+    isDeleted: { type: Boolean, default: false },
+    isFeatured: { type: Boolean, default: false },
     status: { type: String, enum: ["done", "ongoing"], default: "ongoing" },
   },
   {

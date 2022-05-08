@@ -3,7 +3,7 @@ import AccountPage from "pages/AccountPage";
 import Jobs from "pages/Jobs";
 import LoginPage from "pages/LoginPage";
 import NotFoundPage from "pages/NotFoundPage";
-import PostJob from "pages/PostJob";
+import PostJob from "features/job/PostJob";
 import RegisterPage from "pages/RegisterPage";
 import UserProfilePage from "pages/UserProfilePage";
 import React from "react";
@@ -11,6 +11,7 @@ import { Route, Routes } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import HomePage from "../pages/HomePage";
 import AuthRequire from "./AuthRequire";
+import DetailsJobPage from "pages/DetailsJobPage";
 
 const AppRoutes = () => {
   return (
@@ -18,6 +19,7 @@ const AppRoutes = () => {
       <Route path="/" element={<MainLayout />}>
         <Route index element={<HomePage />} />
         <Route path="jobs" element={<Jobs />} />
+        <Route path="job/:jobId" element={<DetailsJobPage />} />
       </Route>
       <Route
         path="/"

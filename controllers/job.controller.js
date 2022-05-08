@@ -68,13 +68,13 @@ jobController.deleteJob = catchAsync(async (req, res, next) => {
 // 4. user can get a single job by id job
 jobController.getSingleJobByJobId = catchAsync(async (req, res, next) => {
   const { id } = req.params;
-  const newJob = await Job.findOne({ _id: id, isDeleted: false });
-  if (!newJob) throwError(400, "job not found", "get single job by id error");
+  const job = await Job.findOne({ _id: id, isDeleted: false });
+  if (!job) throwError(400, "job not found", "get single job by id error");
   return sendResponse(
     res,
     200,
     true,
-    newJob,
+    job,
     null,
     "get Single Job By JobId successful"
   );
@@ -85,10 +85,17 @@ jobController.getSingleJobByJobId = catchAsync(async (req, res, next) => {
 // 7. user can search by city, name, 1 ngày / nhiều ngày, onl/off, Hình thức làm việc ...
 
 jobController.getAllJob = catchAsync(async (req, res, next) => {
-  const { page = 1, limit = 5, ...filter } = { ...req.query };
+  const { page = 1, limit = 5 } = req.query;
+  const filter = req.body;
   const filterCondition = [{ isDeleted: false }];
-
-  const allows = ["name", "type", "category", "location", "status"];
+  const allows = [
+    "name",
+    "type",
+    "category",
+    "location",
+    "status",
+    "isFeatured",
+  ];
   allows.forEach((field) => {
     if (filter[field] !== undefined) {
       filterCondition.push({
@@ -115,7 +122,7 @@ jobController.getAllJob = catchAsync(async (req, res, next) => {
     res,
     200,
     true,
-    { jobList, totalPage },
+    { jobList, count, totalPage },
     null,
     "get all Job successful"
   );

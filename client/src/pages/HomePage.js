@@ -2,22 +2,15 @@ import React, { useEffect } from "react";
 import Carousel from "../components/Carousel";
 
 import apiService from "app/apiService";
+import FeaturingJob from "features/job/FeaturingJob";
 
 const HomePage = () => {
-  useEffect(() => {
-    // console.log("goi api fetch all job");
-    // const fetchData = async () => {
-    //   const res = await apiService.get("/job/all");
-    //   console.log("res :>> ", res);
-    // };
-    // fetchData();
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <div>
-      Home
       <Carousel />
-      <p></p>
+      <FeaturingJob />
     </div>
   );
 };

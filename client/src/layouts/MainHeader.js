@@ -1,5 +1,5 @@
 import { Logout, PersonAdd, Settings } from "@mui/icons-material";
-import { Avatar, Button, Menu, MenuItem } from "@mui/material";
+import { Avatar, Box, Button, Menu, MenuItem } from "@mui/material";
 import Logo from "components/Logo";
 import useAuth from "hooks/useAuth";
 import React, { useState } from "react";
@@ -29,7 +29,7 @@ export const AccountMenu = ({ user, logout }) => {
   };
   console.log(user.name);
   return (
-    <div>
+    <Box>
       <Button
         id="demo-positioned-button"
         aria-controls={open ? "demo-positioned-menu" : undefined}
@@ -61,7 +61,7 @@ export const AccountMenu = ({ user, logout }) => {
         <MenuItem onClick={handleAccount}>My account</MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
-    </div>
+    </Box>
   );
 };
 
@@ -74,13 +74,13 @@ const NAV_ITEMS = [
 const MainHeader = () => {
   const { isAuthenticated, user, logout } = useAuth();
   return (
-    <div id="nav">
-      <div className="container">
-        <div className="logo">
+    <Box id="nav">
+      <Box className="container">
+        <Box className="logo">
           <Logo sx={{ height: "2.5rem" }} />
           Volun
           <span className="red">Cheers</span>
-        </div>
+        </Box>
 
         <ul>
           {NAV_ITEMS.map((item) => (
@@ -105,8 +105,8 @@ const MainHeader = () => {
             )}
           </li>
         </ul>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 
