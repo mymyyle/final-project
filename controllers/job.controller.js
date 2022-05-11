@@ -42,7 +42,8 @@ jobController.editJob = catchAsync(async (req, res, next) => {
 
   const newJob = await Job.findOne({ _id: id, isDeleted: false });
   // if (!newJob) throwError(400, "job not found", "edit job error");
-  if (currentUserId !== newJob.authorId)
+
+  if (!newJob.authorId.equals(currentUserId))
     throwError(401, "not author", "edit job error");
   allows.forEach((field) => {
     if (req.body[field]) newJob[field] = req.body[field];
@@ -58,8 +59,9 @@ jobController.deleteJob = catchAsync(async (req, res, next) => {
   const { currentUserId } = req;
 
   const newJob = await Job.findOne({ _id: id }, "+isDeleted");
-  if (currentUserId !== newJob.authorId)
-    throwError(401, "not author", "edit job error");
+
+  if (!newJob.authorId.equals(currentUserId))
+    throwError(401, "not author", "delete job error");
   newJob.isDeleted = true;
   await newJob.save();
   return sendResponse(res, 200, true, newJob, null, "delete job successful");
@@ -85,8 +87,7 @@ jobController.getSingleJobByJobId = catchAsync(async (req, res, next) => {
 // 7. user can search by city, name, 1 ngày / nhiều ngày, onl/off, Hình thức làm việc ...
 
 jobController.getAllJob = catchAsync(async (req, res, next) => {
-  const { page = 1, limit = 5 } = req.query;
-  const filter = req.body;
+  const { page = 1, limit = 5, ...filter } = req.query;
   const filterCondition = [{ isDeleted: false }];
   const allows = [
     "name",
@@ -112,12 +113,13 @@ jobController.getAllJob = catchAsync(async (req, res, next) => {
   const count = await Job.countDocuments(filterCriteria);
   const totalPage = Math.ceil(count / limit);
   const offset = limit * (page - 1);
-  // .sort({ createAt: -1 })
-  const sort = filter.sort === "decs" ? 1 : -1;
+  // .sort({ createdAt: -1 })
+  const sort = filter.sort === "desc" ? 1 : -1;
   const jobList = await Job.find(filterCriteria)
-    .sort({ createAt: sort })
+    .sort({ createdAt: sort })
     .skip(offset)
-    .limit(limit);
+    .limit(limit)
+    .populate("authorId");
   return sendResponse(
     res,
     200,
@@ -144,20 +146,20 @@ jobController.getJobByAuthorId = catchAsync(async (req, res, next) => {
   });
   const filterCriteria = { $and: filterCondition };
 
-  console.log(filterCriteria);
+  // console.log("=============>", filterCriteria);
   const count = await Job.countDocuments(filterCriteria);
   const totalPage = Math.ceil(count / limit);
   const offset = limit * (page - 1);
-  const sort = filter.sort === "decs" ? 1 : -1;
+  const sort = filter.sort === "desc" ? 1 : -1;
   const jobList = await Job.find(filterCriteria)
-    .sort({ createAt: sort })
+    .sort({ createdAt: sort })
     .skip(offset)
     .limit(limit);
   return sendResponse(
     res,
     200,
     true,
-    { jobList, totalPage },
+    { jobList, count, totalPage },
     null,
     "get all Job successful"
   );

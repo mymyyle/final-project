@@ -12,25 +12,19 @@ const jobSchema = Schema(
     },
     category: {
       type: String,
-      enum: [
-        "Community",
-        "Environment",
-        "Health care",
-        "Sports",
-        "Wildlife Protection",
-      ],
+      enum: ["Community", "Environment", "Health care"],
       required: true,
     },
     description: { type: String, required: true },
     location: { type: String, required: true },
-    imgUrl: { type: String },
+    imageUrl: { type: String },
     detailedInformation: { type: String, required: true },
     isDeleted: { type: Boolean, default: false },
-    isFeatured: { type: Boolean, default: false },
+    isFeatured: { type: String, default: "false" },
     status: { type: String, enum: ["done", "ongoing"], default: "ongoing" },
   },
   {
-    timestamp: true,
+    timestamps: true,
   }
 );
 

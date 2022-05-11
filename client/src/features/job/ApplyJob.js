@@ -68,15 +68,18 @@ const ApplyJob = () => {
             disabled={
               !isAuthenticated ||
               currentJob.status === "done" ||
-              currentApplication.status === "pending" ||
-              currentApplication.status === "approved"
+              (currentApplication.jobId === jobId &&
+                (currentApplication.status === "pending" ||
+                  currentApplication.status === "approved"))
                 ? true
                 : false
             }
           >
-            {currentApplication.status === "approved" ? (
+            {currentApplication.jobId === jobId &&
+            currentApplication.status === "approved" ? (
               <Box component="span">Approved</Box>
-            ) : currentApplication.status === "pending" ? (
+            ) : currentApplication.jobId === jobId &&
+              currentApplication.status === "pending" ? (
               <Box component="span">Sent your application</Box>
             ) : currentJob.status === "done" ? (
               <Box component="span">Hiring Freeze</Box>
@@ -95,8 +98,9 @@ const ApplyJob = () => {
               Login to Apply
             </LoadingButton>
           ) : null}
-          {currentApplication.status === "pending" ||
-          currentApplication.status === "approved" ? (
+          {currentApplication.jobId === jobId &&
+          (currentApplication.status === "pending" ||
+            currentApplication.status === "approved") ? (
             <LoadingButton
               fullWidth
               size="large"

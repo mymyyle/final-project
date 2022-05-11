@@ -12,7 +12,7 @@ import { autoPlay } from "react-swipeable-views-utils";
 import { Navigate, useNavigate } from "react-router-dom";
 
 const poster = [
-  { img: "../src/assets/carousel/cover1.jpg", url: "/jobs" },
+  { img: "./carousel/cover1.jpg", url: "/jobs" },
   { img: "./carousel/cover2.png", url: "/post_job" },
 ];
 
@@ -21,20 +21,18 @@ const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 const images = [
   {
     label: "San Francisco – Oakland Bay Bridge, United States",
-    imgPath:
-      "https://static.s123-cdn-static-d.com/uploads/5355863/normal_61215160ef18e.jpg",
+    imgPath: "https://i.imgur.com/p8UUzyy.png",
+    // "https://static.s123-cdn-static-d.com/uploads/5355863/normal_61215160ef18e.jpg",
     url: "/jobs",
   },
   {
     label: "Bird",
-    imgPath:
-      "https://cdn.neighbourly.co.nz/images/cache/message_max_size/message_images/5a69454584a4f6.61841254.jpeg?170410",
+    imgPath: "https://i.imgur.com/BccXrLl.jpg",
     url: "/post_jobs",
   },
   {
     label: "Bali, Indonesia",
-    imgPath:
-      "https://www.alphaomicronpi.org/wp-content/uploads/2022/04/VolunteerWeek_2022_FB-LI.jpg",
+    imgPath: "https://i.imgur.com/JCpfplI.png",
     url: "/",
   },
 ];
@@ -61,10 +59,11 @@ const Carousel = () => {
     <Box
       sx={{
         maxWidth: "90vw",
-        height: "50vh",
+        height: "70vh",
         flexGrow: 1,
         margin: "auto",
         position: "relative",
+        overflow: "hidden",
       }}
     >
       <AutoPlaySwipeableViews
@@ -79,10 +78,10 @@ const Carousel = () => {
               <Box
                 component="img"
                 sx={{
-                  height: "50vh",
+                  // height: "70vh",
                   display: "block",
-                  objectFit: "contain",
                   width: "90vw",
+                  objectFit: "contain",
                 }}
                 src={step.imgPath}
                 alt={step.label}

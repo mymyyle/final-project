@@ -126,7 +126,7 @@ commentController.getAllCommentByJobId = catchAsync(async (req, res, next) => {
   let { page, limit, sort, reply } = req.query;
   page = parseInt(page) || 1;
   limit = parseInt(limit) || 5;
-  sort = sort === "decs" ? 1 : -1;
+  sort = sort === "desc" ? 1 : -1;
 
   const filterCriteria =
     reply === "missing" ? { $and: [{ jobId }, { reply: "" }] } : { jobId };
@@ -137,7 +137,7 @@ commentController.getAllCommentByJobId = catchAsync(async (req, res, next) => {
   const offset = limit * (page - 1);
 
   commentList = await Comment.find(filterCriteria)
-    .sort({ createAt: sort })
+    .sort({ createdAt: sort })
     .skip(offset)
     .limit(limit);
   return sendResponse(

@@ -7,7 +7,7 @@ import { Container, Stack, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
 import { useDispatch, useSelector } from "react-redux";
-import { createComment } from "./commentSlice";
+import { createComment, editComment } from "./commentSlice";
 import { useParams } from "react-router-dom";
 
 const NewCommentSchema = Yup.object().shape({
@@ -18,7 +18,7 @@ const defaultValues = {
   content: "",
 };
 
-const CommentPost = () => {
+const EditQuestion = ({ id, setShowEdit }) => {
   const methods = useForm({
     resolver: yupResolver(NewCommentSchema),
     defaultValues,
@@ -33,9 +33,10 @@ const CommentPost = () => {
 
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.comment);
-  const { jobId } = useParams();
+
   const onSubmit = async (data) => {
-    dispatch(createComment(jobId, data)).then(() => reset());
+    setShowEdit(false);
+    dispatch(editComment(id, data)).then(() => reset());
   };
   return (
     <Container
@@ -51,7 +52,7 @@ const CommentPost = () => {
         <Stack spacing={1} sx={{ marginBottom: 2 }}>
           <FTextField
             name="content"
-            label="Question"
+            label="Edit Question"
             placeholder="Enter your question"
           />
 
@@ -61,7 +62,7 @@ const CommentPost = () => {
             variant="contained"
             loading={isSubmitting || isLoading}
           >
-            Post
+            Update
           </LoadingButton>
         </Stack>
       </FormProvider>
@@ -69,4 +70,4 @@ const CommentPost = () => {
   );
 };
 
-export default CommentPost;
+export default EditQuestion;

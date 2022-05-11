@@ -25,7 +25,7 @@ const applicationSchema = Schema(
       enum: ["pending", "approved", "rejected"],
     },
   },
-  { timestamp: true }
+  { timestamps: true }
 );
 
 const Application = mongoose.model("Applications", applicationSchema);

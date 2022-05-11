@@ -18,7 +18,7 @@ const commentSchema = Schema(
     isEdited: { type: Boolean, default: false },
   },
   {
-    timestamp: true,
+    timestamps: true,
   }
 );
 

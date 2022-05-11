@@ -2,7 +2,8 @@ import { Logout, PersonAdd, Settings } from "@mui/icons-material";
 import { Avatar, Box, Button, Menu, MenuItem } from "@mui/material";
 import Logo from "components/Logo";
 import useAuth from "hooks/useAuth";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 
 import "./MainHeader.scss";
@@ -15,7 +16,6 @@ export const AccountMenu = ({ user, logout }) => {
   };
   const navigate = useNavigate();
   const handleAccount = () => {
-    console.log(`click`);
     navigate("/account");
   };
   const handleLogout = () => {
@@ -27,7 +27,6 @@ export const AccountMenu = ({ user, logout }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  console.log(user.name);
   return (
     <Box>
       <Button
@@ -40,7 +39,7 @@ export const AccountMenu = ({ user, logout }) => {
         {user.avatarUrl ? (
           <Avatar alt={user.name} src={user.avatarUrl} />
         ) : (
-          <Avatar sx={{ bgcolor: "#ffa502" }}>{user.name[0]}</Avatar>
+          <Avatar sx={{ backgroundColor: "#ffa502" }}>{user.name[0]}</Avatar>
         )}
       </Button>
       <Menu
@@ -73,6 +72,13 @@ const NAV_ITEMS = [
 
 const MainHeader = () => {
   const { isAuthenticated, user, logout } = useAuth();
+  // let { currentUser } = useSelector((state) => state.user);
+
+  // if (currentUser === null) currentUser = { ...user };
+  // useEffect(() => {
+  //   if (currentUser === null) currentUser = { ...user };
+  //   }, [currentUser, user]);
+
   return (
     <Box id="nav">
       <Box className="container">

@@ -1,0 +1,101 @@
+import { Avatar, Button, Chip, TableCell, Typography } from "@mui/material";
+import { Box } from "@mui/system";
+import React from "react";
+import { startCase, toLower } from "lodash";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { respondRequest } from "./applicationSlice";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import CancelIcon from "@mui/icons-material/Cancel";
+const ApplicationRow = ({ application }) => {
+  const { candidateId: candidate, message, status, jobId: job } = application;
+  const navigate = useNavigate();
+  const handleClickName = () => {
+    navigate(`/user/${candidate._id}`);
+  };
+
+  const dispatch = useDispatch();
+  const handleResponse = (request) => {
+    dispatch(respondRequest(request, candidate._id, job._id));
+  };
+
+  return (
+    <>
+      <TableCell>
+        <Box>
+          <Box sx={{ display: "flex", marginBottom: 2 }}>
+            {candidate?.AvatarUrl ? (
+              <Avatar alt="avatar" src={candidate?.AvatarUrl} />
+            ) : (
+              !!candidate?.name && (
+                <Avatar sx={{ bgcolor: "#ffa502" }}>
+                  {candidate?.name[0]}
+                </Avatar>
+              )
+            )}
+            <Button
+              sx={{ alignSelf: "end", textTransform: "none" }}
+              onClick={handleClickName}
+            >
+              {startCase(toLower(candidate?.name))}{" "}
+            </Button>
+          </Box>
+          {message && <Typography>{message}</Typography>}
+        </Box>
+      </TableCell>
+
+      <TableCell align="right">
+        {status === "pending" ? (
+          <Chip label="Waiting for response" color="warning" />
+        ) : status === "approved" ? (
+          <Chip
+            icon={<CheckCircleOutlineIcon />}
+            label="Approved"
+            color="success"
+          />
+        ) : (
+          <Chip icon={<CancelIcon />} label="Rejected" color="error" />
+        )}
+      </TableCell>
+      <TableCell align="right">
+        {status === "pending" ? (
+          <>
+            {" "}
+            <Button
+              onClick={() => handleResponse("approved")}
+              variant="contained"
+              sx={{ mr: "2px" }}
+            >
+              Approve
+            </Button>
+            <Button
+              color="error"
+              onClick={() => handleResponse("rejected")}
+              variant="contained"
+            >
+              Reject
+            </Button>
+          </>
+        ) : status === "approved" ? (
+          <Button
+            color="error"
+            onClick={() => handleResponse("rejected")}
+            variant="contained"
+          >
+            Reject
+          </Button>
+        ) : (
+          <Button
+            onClick={() => handleResponse("approved")}
+            variant="contained"
+            sx={{ mr: "2px" }}
+          >
+            Approve
+          </Button>
+        )}
+      </TableCell>
+    </>
+  );
+};
+
+export default ApplicationRow;

@@ -1,5 +1,6 @@
 import apiService from "app/apiService";
 import { createContext, useEffect, useReducer } from "react";
+import { useSelector } from "react-redux";
 import { isValidToken } from "utils/jwt";
 
 const initialState = {
@@ -52,6 +53,17 @@ const reducer = (state, action) => {
         isAuthenticated: false,
         user: null,
       };
+    case UPDATE_PROFILE:
+      const { name, avatarUrl, aboutMe } = action.payload;
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          name,
+          avatarUrl,
+          aboutMe,
+        },
+      };
     default:
       return state;
   }
@@ -61,6 +73,11 @@ const AuthContext = createContext({ ...initialState });
 
 function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const updatedProfile = useSelector((state) => state.user.currentUser);
+  useEffect(() => {
+    if (updatedProfile)
+      dispatch({ type: UPDATE_PROFILE, payload: updatedProfile });
+  }, [updatedProfile]);
 
   useEffect(() => {
     const initialize = async () => {

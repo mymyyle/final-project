@@ -7,6 +7,9 @@ const initialState = {
   jobIds: [],
   jobs: {},
   currentJob: {},
+  allJobs: [],
+  totalPages: 1,
+  totalJobs: 0,
 };
 
 const slice = createSlice({
@@ -26,20 +29,42 @@ const slice = createSlice({
       state.jobIds.unshift(action.payload._id);
       state.jobs[action.payload._id] = action.payload;
     },
+    editJobSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      state.currentJob = { ...action.payload };
+    },
     getJobSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
-      const { jobList } = action.payload;
+      const { jobList, count, totalPage } = action.payload;
       state.jobIds = [];
       jobList.forEach((job) => {
         state.jobIds.push(job._id);
         state.jobs[job._id] = job;
       });
+      state.totalJobs = count;
+      state.totalPages = totalPage;
     },
     getJobByIdSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
       state.currentJob = { ...action.payload };
+    },
+    getJobOfCurrentUserSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const { jobList, count, totalPage } = action.payload;
+      state.allJobs = [...jobList];
+      state.totalJobs = count;
+      state.totalPages = totalPage;
+    },
+    deleteJobSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      state.allJobs = state.allJobs.filter(
+        (job) => job._id !== action.payload._id
+      );
     },
   },
 });
@@ -71,17 +96,48 @@ export const createJob =
       dispatch(slice.actions.hasError(error.message));
     }
   };
+export const editJob =
+  (
+    jobId,
+    {
+      name,
+      type,
+      location,
+      description,
+      imageUrl,
+      detailedInformation,
+      category,
+      ...data
+    }
+  ) =>
+  async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    let status;
+    if (data.status !== "ongoing") status = "done";
+    try {
+      const response = await apiService.put(`/job/update/${jobId}`, {
+        name,
+        type,
+        location,
+        description,
+        imageUrl,
+        detailedInformation,
+        category,
+        status,
+      });
+      dispatch(slice.actions.editJobSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+    }
+  };
 
 export const getJob =
   ({ page = 1, limit = 5, ...body }) =>
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
-    const query = { page, limit };
+    const query = { page, limit, ...body };
     try {
-      const response = await apiService.get(
-        `/job/all?${stringify(query)}`,
-        body
-      );
+      const response = await apiService.get(`/job/all?${stringify(query)}`);
       dispatch(slice.actions.getJobSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
@@ -97,4 +153,26 @@ export const getJobById = (jobId) => async (dispatch) => {
     dispatch(slice.actions.hasError(error.message));
   }
 };
+export const getJobOfCurrentUser =
+  ({ name, page = 1, limit = 5 }) =>
+  async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    const query = { page, limit, name };
+    try {
+      const response = await apiService.get(`/job/me/all?${stringify(query)}`);
+      dispatch(slice.actions.getJobOfCurrentUserSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+    }
+  };
+export const deleteJob = (jobId) => async (dispatch) => {
+  dispatch(slice.actions.startLoading());
+  try {
+    const response = await apiService.delete(`/job/delete/${jobId}`);
+    dispatch(slice.actions.deleteJobSuccess(response.data));
+  } catch (error) {
+    dispatch(slice.actions.hasError(error.message));
+  }
+};
+
 export default slice.reducer;

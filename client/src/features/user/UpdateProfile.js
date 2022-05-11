@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import { FormProvider, FTextField } from "../components/form";
-import useAuth from "../hooks/useAuth";
+import React, { useEffect, useState } from "react";
+import useAuth from "hooks/useAuth";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -14,69 +13,82 @@ import {
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-
 import { LoadingButton } from "@mui/lab";
+import { FormProvider, FTextField } from "components/form";
+import { useDispatch, useSelector } from "react-redux";
+import { deactivateAccount, updateAccount } from "./userSlice";
 
-const RegisterSchema = Yup.object().shape({
-  name: Yup.string().required("Name is required"),
-  email: Yup.string().email("Invalid email").required("Email is required"),
-  password: Yup.string().required("password is required"),
-  passwordConfirmation: Yup.string()
-    .required("please confirm your password")
-    .oneOf([Yup.ref("password")], "Passwords must match"),
+const UpdateProfileSchema = Yup.object().shape({
+  password: Yup.string(),
+
+  passwordConfirmation: Yup.string().oneOf(
+    [Yup.ref("password")],
+    "Passwords must match"
+  ),
 });
 
 const defaultValues = {
-  email: "",
   password: "",
-  name: "",
   passwordConfirmation: "",
+  name: "",
+  avatarUrl: "",
+  aboutMe: "",
 };
 
-const RegisterPage = () => {
-  const location = useLocation();
+const UpdateProfile = () => {
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const auth = useAuth();
+  const { isLoading, error } = useSelector((state) => state.user);
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirmation, setShowPasswordConfirmation] =
     useState(false);
 
+  useEffect(() => {
+    reset({
+      password: "",
+      passwordConfirmation: "",
+      name: user.name,
+      avatarUrl: user.avatarUrl,
+      aboutMe: user.aboutMe,
+    });
+  }, [user]);
   const methods = useForm({
-    resolver: yupResolver(RegisterSchema),
+    resolver: yupResolver(UpdateProfileSchema),
     defaultValues,
   });
 
   const {
     handleSubmit,
     reset,
-    setError,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
   } = methods;
 
+  const dispatch = useDispatch();
   const onSubmit = async (data) => {
-    let { name, email, password } = data;
-    try {
-      await auth.register({ name, email, password }, () => navigate("/"));
-    } catch (error) {
-      reset();
-      setError("responseError", error);
-    }
+    dispatch(updateAccount(data)).then(() => reset());
+  };
+
+  const handleDeactivate = () => {
+    dispatch(deactivateAccount());
+    logout(() => {
+      navigate("/register");
+    });
   };
   return (
     <Container maxWidth="xs">
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={3} sx={{ marginBottom: 3 }}>
-          {!!errors.responseError && (
-            <Alert severity="error">{errors.responseError.message} </Alert>
-          )}
-          <Alert severity="info">
-            Already have an account?{" "}
-            <Link variant="subtitle2" to="/login">
-              Sign in
-            </Link>
-          </Alert>
+          {error && <Alert severity="error">{error} </Alert>}
+
           <FTextField name="name" label="Name" />
-          <FTextField name="email" label="Email address" />
+          <FTextField name="avatarUrl" label="Link Avatar" />
+          <FTextField
+            multiline
+            rows={4}
+            name="aboutMe"
+            label="About Me"
+            placeholder="Tell everybody something about you"
+          />
           <FTextField
             name="password"
             label="Password"
@@ -126,13 +138,24 @@ const RegisterPage = () => {
           size="large"
           type="submit"
           variant="contained"
-          loading={isSubmitting}
+          loading={isSubmitting || isLoading}
         >
-          Register
+          Update
         </LoadingButton>
       </FormProvider>
+      <LoadingButton
+        fullWidth
+        size="large"
+        color="error"
+        variant="contained"
+        sx={{ marginTop: 3 }}
+        loading={isSubmitting || isLoading}
+        onClick={handleDeactivate}
+      >
+        Deactivate Account
+      </LoadingButton>
     </Container>
   );
 };
 
-export default RegisterPage;
+export default UpdateProfile;

@@ -81,10 +81,10 @@ userController.updateAccount = catchAsync(async (req, res, next) => {
     "+password"
   );
   if (!user) throwError(404, "User not found", "update user error");
-
+  console.log(`name`, req.body.name);
   const allows = ["name", "avatarUrl", "aboutMe"];
   allows.forEach((field) => {
-    if (req.body[field] !== undefined) {
+    if (req.body[field] !== "") {
       user[field] = req.body[field];
     }
   });

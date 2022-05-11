@@ -39,12 +39,15 @@ applicationController.cancelJob = catchAsync(async (req, res, next) => {
     jobId,
     candidateId: currentUserId,
   });
+  let applicationId;
   if (!application)
     throwError(
       404,
       "user's application for this job not found",
       "cancel error"
     );
+  else applicationId = application._id;
+
   application = await Application.deleteOne({
     jobId,
     candidateId: currentUserId,
@@ -54,7 +57,7 @@ applicationController.cancelJob = catchAsync(async (req, res, next) => {
     res,
     200,
     true,
-    application,
+    { applicationId },
     null,
     "cancel job successful"
   );
@@ -125,15 +128,17 @@ applicationController.getAllApplicationsByJobId = catchAsync(
     const totalPage = Math.ceil(count / limit);
     const offset = limit * (page - 1);
     const applicationList = await Application.find(filterCriteria)
-      .sort({ createAt: -1 })
+      .sort({ createdAt: -1 })
       .skip(offset)
-      .limit(limit);
+      .limit(limit)
+      .populate("jobId")
+      .populate("candidateId");
 
     return sendResponse(
       res,
       200,
       true,
-      { applicationList, totalPage },
+      { applicationList, count, totalPage },
       null,
       "get all applications by job Id successful (employer login required)"
     );
@@ -163,15 +168,17 @@ applicationController.getAllOwnJobApplication = catchAsync(
     const totalPage = Math.ceil(count / limit);
     const offset = limit * (page - 1);
     const applicationList = await Application.find(filterCriteria)
-      .sort({ createAt: -1 })
+      .sort({ createdAt: -1 })
       .skip(offset)
-      .limit(limit);
+      .limit(limit)
+      .populate("jobId")
+      .populate("employerId");
 
     return sendResponse(
       res,
       200,
       true,
-      { applicationList, totalPage },
+      { applicationList, count, totalPage },
       null,
       "get all applications of user successful"
     );

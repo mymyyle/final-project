@@ -1,6 +1,8 @@
+import { Container, Grid } from "@mui/material";
 import LoadingScreen from "components/LoadingScreen";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import JobCard from "./JobCard";
 import { getJob } from "./jobSlice";
 
 const FeaturingJob = () => {
@@ -8,7 +10,7 @@ const FeaturingJob = () => {
   const { isLoading, error, jobIds, jobs } = useSelector((state) => state.job);
 
   useEffect(() => {
-    dispatch(getJob({ isFeatured: true }));
+    dispatch(getJob({ page: 1, limit: 6, isFeatured: "true" }));
   }, []);
 
   if (isLoading) {
@@ -16,11 +18,26 @@ const FeaturingJob = () => {
   }
 
   return (
-    <div>
-      {jobIds.map((jobId) => (
-        <p>{jobs[jobId].name}</p>
-      ))}
-    </div>
+    <>
+      <Container
+        maxWidth="lg"
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: "1rem",
+          marginBottom: "1rem",
+        }}
+      >
+        <Grid container spacing={3}>
+          {jobIds.map((jobId) => (
+            <Grid key={jobId} item lg={4} md={6} xs={12}>
+              <JobCard job={jobs[jobId]} />
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+    </>
   );
 };
 

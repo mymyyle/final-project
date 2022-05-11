@@ -7,6 +7,12 @@ export function fDate(date) {
 export function fDateTime(date) {
   return format(new Date(date), "dd MMM yyyy HH:mm");
 }
+export function fTime(date) {
+  return format(new Date(date), "HH:mm");
+}
+export function fDay(date) {
+  return format(new Date(date), "dd MMM");
+}
 
 export function fTimestamp(date) {
   return getTime(new Date(date));

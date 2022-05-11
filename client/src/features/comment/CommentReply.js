@@ -7,20 +7,20 @@ import { Container, Stack, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
 import { useDispatch, useSelector } from "react-redux";
-import { createComment } from "./commentSlice";
+import { createComment, replyComment } from "./commentSlice";
 import { useParams } from "react-router-dom";
 
-const NewCommentSchema = Yup.object().shape({
-  content: Yup.string().required("Content is required"),
+const CommentSchema = Yup.object().shape({
+  reply: Yup.string().required("your answer is required"),
 });
 
 const defaultValues = {
-  content: "",
+  reply: "",
 };
 
-const CommentPost = () => {
+const CommentReply = ({ id }) => {
   const methods = useForm({
-    resolver: yupResolver(NewCommentSchema),
+    resolver: yupResolver(CommentSchema),
     defaultValues,
   });
 
@@ -33,9 +33,8 @@ const CommentPost = () => {
 
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.comment);
-  const { jobId } = useParams();
   const onSubmit = async (data) => {
-    dispatch(createComment(jobId, data)).then(() => reset());
+    dispatch(replyComment(id, data)).then(() => reset());
   };
   return (
     <Container
@@ -50,9 +49,9 @@ const CommentPost = () => {
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={1} sx={{ marginBottom: 2 }}>
           <FTextField
-            name="content"
-            label="Question"
-            placeholder="Enter your question"
+            name="reply"
+            label="Answer"
+            placeholder="Enter your answer"
           />
 
           <LoadingButton
@@ -69,4 +68,4 @@ const CommentPost = () => {
   );
 };
 
-export default CommentPost;
+export default CommentReply;

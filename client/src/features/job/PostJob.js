@@ -7,6 +7,7 @@ import { Alert, Container, Stack, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { createJob } from "./jobSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const NewJobSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -16,12 +17,12 @@ const NewJobSchema = Yup.object().shape({
 
 const defaultValues = {
   name: "",
-  type: "gender",
+  type: "Temporary",
   location: "",
   description: "",
   imageUrl: "",
   detailedInformation: "",
-  category: "environment",
+  category: "Environment",
 };
 
 const PostJob = () => {
@@ -39,9 +40,10 @@ const PostJob = () => {
 
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.job);
-
+  const navigate = useNavigate();
   const onSubmit = async (data) => {
     dispatch(createJob(data)).then(() => reset());
+    navigate("/jobs");
   };
   return (
     <Container
@@ -83,13 +85,7 @@ const PostJob = () => {
           <FRadioGroup
             name="category"
             label="category"
-            options={[
-              "Community",
-              "Environment",
-              "Health care",
-              "Sports",
-              "Wildlife Protection",
-            ]}
+            options={["Community", "Environment", "Health care"]}
           />
           <FTextField name="imageUrl" label="Image Link" />
 
