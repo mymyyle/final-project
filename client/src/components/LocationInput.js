@@ -13,14 +13,16 @@ const LocationInput = ({ onInputChange }) => {
           onInputChange={(event, newInputValue) => {
             onInputChange(newInputValue);
           }}
+          size={"small"}
+          style={{ width: 200, marginRight: 25 }}
           options={data.map((location) => location.name)}
-          sx={{ width: 200, height: 1.5 }}
           renderInput={(params) => (
             <TextField
               {...params}
               label="Search by Location"
               InputProps={{
                 ...params.InputProps,
+                style: { height: 40 },
               }}
             />
           )}

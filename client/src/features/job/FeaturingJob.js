@@ -31,7 +31,7 @@ const FeaturingJob = () => {
       >
         <Grid container spacing={3}>
           {jobIds.map((jobId) => (
-            <Grid key={jobId} item lg={4} md={6} xs={12}>
+            <Grid key={jobId} item lg={4} sm={6} xs={12}>
               <JobCard job={jobs[jobId]} />
             </Grid>
           ))}

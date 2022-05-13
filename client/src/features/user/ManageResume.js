@@ -89,7 +89,7 @@ const ManageResume = () => {
             <TableHead>
               <TableRow>
                 <TableCell>Job's Name</TableCell>
-                <TableCell align="right">Create At</TableCell>
+                <TableCell align="right">Created At</TableCell>
                 <TableCell align="right">Status</TableCell>
                 <TableCell align="right">Edit Job</TableCell>
                 <TableCell align="right">Delete Job</TableCell>

@@ -1,11 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import apiService from "app/apiService";
+import { stringify } from "query-string";
 
 const initialState = {
   isLoading: false,
   error: null,
   commentIds: [],
   comments: {},
+  totalPages: 1,
+  totalComments: 0,
 };
 
 const slice = createSlice({
@@ -24,17 +27,20 @@ const slice = createSlice({
       state.error = null;
       state.commentIds.unshift(action.payload._id);
       state.comments[action.payload._id] = action.payload;
+      state.totalComments = state.totalComments + 1;
     },
     getCommentSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
-      const { commentList } = action.payload;
+      const { commentList, count, totalPage } = action.payload;
       state.commentIds = [];
       commentList?.forEach((comment) => {
         if (!state.commentIds.includes(comment._id))
           state.commentIds.unshift(comment._id);
         state.comments[comment._id] = { ...comment };
       });
+      state.totalComments = count;
+      state.totalPages = totalPage;
     },
     replyCommentSuccess(state, action) {
       state.isLoading = false;
@@ -53,6 +59,7 @@ const slice = createSlice({
       state.error = null;
       const comment = action.payload;
       state.commentIds = state.commentIds.filter((id) => id !== comment._id);
+      state.totalComments = state.commentIds.length;
     },
   },
 });
@@ -69,15 +76,19 @@ export const createComment =
       dispatch(slice.actions.hasError(error.message));
     }
   };
-export const getCommentList = (jobId) => async (dispatch) => {
-  dispatch(slice.actions.startLoading());
-  try {
-    const response = await apiService.get(`/comment/all/${jobId}`);
-    dispatch(slice.actions.getCommentSuccess(response.data));
-  } catch (error) {
-    dispatch(slice.actions.hasError(error.message));
-  }
-};
+export const getCommentList =
+  (jobId, reply, page, limit) => async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    const query = { page, limit, reply };
+    try {
+      const response = await apiService.get(
+        `/comment/all/${jobId}?${stringify(query)}`
+      );
+      dispatch(slice.actions.getCommentSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+    }
+  };
 
 export const replyComment =
   (id, { reply }) =>

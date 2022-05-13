@@ -90,7 +90,7 @@ const ManageApplication = () => {
             <TableHead>
               <TableRow>
                 <TableCell>Job's Name</TableCell>
-                <TableCell align="right">Create At</TableCell>
+                <TableCell align="right">Created At</TableCell>
                 <TableCell align="right">Application's Status</TableCell>
                 <TableCell align="right">Action</TableCell>
               </TableRow>

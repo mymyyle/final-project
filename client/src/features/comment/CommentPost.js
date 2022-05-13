@@ -3,12 +3,13 @@ import { FormProvider, FTextField } from "../../components/form";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { Container, Stack, Typography } from "@mui/material";
+import { Card, Container, Stack, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
 import { useDispatch, useSelector } from "react-redux";
 import { createComment } from "./commentSlice";
 import { useParams } from "react-router-dom";
+import SendIcon from "@mui/icons-material/Send";
 
 const NewCommentSchema = Yup.object().shape({
   content: Yup.string().required("Content is required"),
@@ -33,22 +34,27 @@ const CommentPost = () => {
 
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.comment);
-  const { jobId } = useParams();
+  // const { jobId } = useParams();
+  const { currentJob } = useSelector((state) => state.job);
+
   const onSubmit = async (data) => {
-    dispatch(createComment(jobId, data)).then(() => reset());
+    dispatch(createComment(currentJob._id, data)).then(() => reset());
   };
   return (
     <Container
-      maxWidth="md"
       sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        margin: "1rem",
+        margin: "1rem 0",
       }}
     >
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-        <Stack spacing={1} sx={{ marginBottom: 2 }}>
+        <Card
+          sx={{
+            marginBottom: 2,
+            display: "flex",
+            justifyContent: "start",
+            p: "1rem",
+          }}
+        >
           <FTextField
             name="content"
             label="Question"
@@ -58,12 +64,11 @@ const CommentPost = () => {
           <LoadingButton
             size="small"
             type="submit"
-            variant="contained"
             loading={isSubmitting || isLoading}
           >
-            Post
+            <SendIcon />
           </LoadingButton>
-        </Stack>
+        </Card>
       </FormProvider>
     </Container>
   );

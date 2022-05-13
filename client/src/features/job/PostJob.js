@@ -47,12 +47,11 @@ const PostJob = () => {
   };
   return (
     <Container
-      maxWidth="lg"
       sx={{
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        margin: "1rem",
+        margin: { lg: "1rem auto", sm: "1rem 0rem" },
       }}
     >
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -85,7 +84,7 @@ const PostJob = () => {
           <FRadioGroup
             name="category"
             label="category"
-            options={["Community", "Environment", "Health care"]}
+            options={["Community", "Environment", "Healthcare"]}
           />
           <FTextField name="imageUrl" label="Image Link" />
 

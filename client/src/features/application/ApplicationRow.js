@@ -40,7 +40,7 @@ const ApplicationRow = ({ application }) => {
               {startCase(toLower(candidate?.name))}{" "}
             </Button>
           </Box>
-          {message && <Typography>{message}</Typography>}
+          {message && <Typography>Application message: {message}</Typography>}
         </Box>
       </TableCell>
 
@@ -63,15 +63,16 @@ const ApplicationRow = ({ application }) => {
             {" "}
             <Button
               onClick={() => handleResponse("approved")}
-              variant="contained"
-              sx={{ mr: "2px" }}
+              variant="outlined"
+              sx={{ mr: "2px", textTransform: "none" }}
             >
               Approve
             </Button>
             <Button
               color="error"
               onClick={() => handleResponse("rejected")}
-              variant="contained"
+              variant="outlined"
+              sx={{ textTransform: "none" }}
             >
               Reject
             </Button>
@@ -80,15 +81,18 @@ const ApplicationRow = ({ application }) => {
           <Button
             color="error"
             onClick={() => handleResponse("rejected")}
-            variant="contained"
+            // variant="contained"
+            variant="outlined"
+            sx={{ textTransform: "none" }}
           >
             Reject
           </Button>
         ) : (
           <Button
             onClick={() => handleResponse("approved")}
-            variant="contained"
-            sx={{ mr: "2px" }}
+            // variant="contained"
+            variant="outlined"
+            sx={{ mr: "2px", textTransform: "none" }}
           >
             Approve
           </Button>

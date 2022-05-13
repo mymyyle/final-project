@@ -8,7 +8,7 @@ import WorkIcon from "@mui/icons-material/Work";
 import PeopleIcon from "@mui/icons-material/People";
 import { Box } from "@mui/system";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { Tab } from "@mui/material";
+import { Tab, Tabs } from "@mui/material";
 import { useSelector } from "react-redux";
 import ManageApplication from "features/application/ManageApplication";
 const TAB = [
@@ -51,10 +51,13 @@ const AccountPage = () => {
               borderColor: "divider",
             }}
           >
-            <TabList
+            <Tabs
               // orientation="vertical"
               onChange={handleChange}
               aria-label="account tab"
+              variant="scrollable"
+              scrollButtons
+              allowScrollButtonsMobile
             >
               {TAB.map((tab) => (
                 <Tab
@@ -64,7 +67,7 @@ const AccountPage = () => {
                   icon={tab.icon}
                 />
               ))}
-            </TabList>
+            </Tabs>
           </Box>
 
           {TAB.map((tab) => (

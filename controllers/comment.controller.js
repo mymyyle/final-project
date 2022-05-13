@@ -19,6 +19,7 @@ commentController.createComment = catchAsync(async (req, res, next) => {
     content,
     reply: "",
   });
+  await newComment.populate("authorCommentId");
   return sendResponse(
     res,
     200,
@@ -34,7 +35,7 @@ commentController.editComment = catchAsync(async (req, res, next) => {
   const { id } = req.params;
   const { currentUserId } = req;
 
-  const comment = await Comment.findOne({
+  let comment = await Comment.findOne({
     _id: id,
     authorCommentId: currentUserId,
   });
@@ -48,6 +49,7 @@ commentController.editComment = catchAsync(async (req, res, next) => {
   if (!content) throwError(400, "missing content", "edit comment error");
   comment.content = content;
   comment.isEdited = true;
+  await comment.populate("authorCommentId");
   await comment.save();
   return sendResponse(res, 200, true, comment, null, "edit comment successful");
 });
@@ -97,6 +99,7 @@ commentController.replyCommentByEmployer = catchAsync(
     const { reply } = req.body;
     if (!reply) throwError(400, "missing reply content", "reply comment error");
     comment.reply = reply;
+    await comment.populate("authorCommentId");
     await comment.save();
     return sendResponse(
       res,
@@ -116,12 +119,6 @@ commentController.getAllCommentByJobId = catchAsync(async (req, res, next) => {
   if (!job) throwError(404, "job not found", "get all comment by job id error");
 
   let commentList = await Comment.find({ jobId });
-  if (!commentList.length)
-    throwError(
-      404,
-      "job doesn't have comment ",
-      "get all comment by job id error"
-    );
 
   let { page, limit, sort, reply } = req.query;
   page = parseInt(page) || 1;
@@ -139,12 +136,13 @@ commentController.getAllCommentByJobId = catchAsync(async (req, res, next) => {
   commentList = await Comment.find(filterCriteria)
     .sort({ createdAt: sort })
     .skip(offset)
-    .limit(limit);
+    .limit(limit)
+    .populate("authorCommentId");
   return sendResponse(
     res,
     200,
     true,
-    { commentList, totalPage },
+    { commentList, totalPage, count },
     null,
     "get all comment by job id successful"
   );

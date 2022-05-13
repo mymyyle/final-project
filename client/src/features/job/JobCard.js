@@ -28,10 +28,7 @@ const JobCard = ({ job }) => {
         component="img"
         src={job.imageUrl}
         alt="job img"
-        sx={
-          //  { height: "100%", width: "100%", objectFit: "cover" },
-          [{ height: "100%", width: "100%", objectFit: "cover" }]
-        }
+        sx={[{ height: "100%", width: "100%", objectFit: "cover" }]}
       />
       <Box
         sx={{
@@ -46,6 +43,7 @@ const JobCard = ({ job }) => {
           fontWeight: 700,
           color: "white",
           fontSize: 22,
+          borderRadius: "0 0 10px 10px",
         }}
       >
         {fDay(job.createdAt)}

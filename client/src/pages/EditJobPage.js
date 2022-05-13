@@ -105,7 +105,7 @@ const EditJobPage = () => {
             <FRadioGroup
               name="category"
               label="category"
-              options={["Community", "Environment", "Health care"]}
+              options={["Community", "Environment", "Healthcare"]}
             />
             <FTextField name="imageUrl" label="Image Link" />
 

@@ -70,7 +70,9 @@ jobController.deleteJob = catchAsync(async (req, res, next) => {
 // 4. user can get a single job by id job
 jobController.getSingleJobByJobId = catchAsync(async (req, res, next) => {
   const { id } = req.params;
-  const job = await Job.findOne({ _id: id, isDeleted: false });
+  const job = await Job.findOne({ _id: id, isDeleted: false }).populate(
+    "authorId"
+  );
   if (!job) throwError(400, "job not found", "get single job by id error");
   return sendResponse(
     res,

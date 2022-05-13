@@ -1,7 +1,7 @@
 import React from "react";
 import { FormProvider, FTextField } from "../../components/form";
 import { useForm } from "react-hook-form";
-import { Container, Stack } from "@mui/material";
+import { Card, Container, Stack } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { useDispatch, useSelector } from "react-redux";
 import { applyJob, cancelJob } from "features/application/applicationSlice";
@@ -47,73 +47,80 @@ const ApplyJob = () => {
   };
   const { isAuthenticated } = useAuth();
   return (
-    <Container maxWidth="xs">
-      <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-        <Stack spacing={1}>
-          <FTextField
-            name="message"
-            label="Message"
-            placeholder="Tell employer something about yourself
+    <Card
+      sx={{
+        mt: "1rem",
+        p: "1rem 0",
+        position: { sm: "fixed" },
+        top: { md: "390px", sm: "555px" },
+        width: { sm: "25%" },
+      }}
+    >
+      <Container maxWidth="xs">
+        <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+          <Stack spacing={1}>
+            <FTextField
+              name="message"
+              label="Message"
+              placeholder="Tell employer something about yourself
            "
-            multiline
-            rows="3"
-          />
+              multiline
+              rows="3"
+            />
 
-          <LoadingButton
-            fullWidth
-            size="large"
-            type="submit"
-            variant="contained"
-            loading={isSubmitting || isLoading}
-            disabled={
-              !isAuthenticated ||
-              currentJob.status === "done" ||
-              (currentApplication.jobId === jobId &&
-                (currentApplication.status === "pending" ||
-                  currentApplication.status === "approved"))
-                ? true
-                : false
-            }
-          >
-            {currentApplication.jobId === jobId &&
-            currentApplication.status === "approved" ? (
-              <Box component="span">Approved</Box>
-            ) : currentApplication.jobId === jobId &&
+            <LoadingButton
+              fullWidth
+              size="large"
+              type="submit"
+              variant="contained"
+              loading={isSubmitting || isLoading}
+              disabled={
+                !isAuthenticated ||
+                currentJob.status === "done" ||
+                (currentApplication.jobId === jobId &&
+                  (currentApplication.status === "pending" ||
+                    currentApplication.status === "approved"))
+                  ? true
+                  : false
+              }
+            >
+              {currentApplication.jobId === jobId &&
               currentApplication.status === "pending" ? (
-              <Box component="span">Sent your application</Box>
-            ) : currentJob.status === "done" ? (
-              <Box component="span">Hiring Freeze</Box>
-            ) : (
-              <Box component="span"> Send an Application</Box>
-            )}
-          </LoadingButton>
-          {!isAuthenticated ? (
-            <LoadingButton
-              fullWidth
-              size="large"
-              variant="contained"
-              loading={isLoading}
-              onClick={handleLogin}
-            >
-              Login to Apply
+                <Box component="span">Sent your application</Box>
+              ) : currentJob.status === "done" ? (
+                <Box component="span">Hiring Freeze</Box>
+              ) : (
+                <Box component="span"> Send an Application</Box>
+              )}
             </LoadingButton>
-          ) : null}
-          {currentApplication.jobId === jobId &&
-          (currentApplication.status === "pending" ||
-            currentApplication.status === "approved") ? (
-            <LoadingButton
-              fullWidth
-              size="large"
-              variant="contained"
-              loading={isLoading}
-              onClick={handleCancel}
-            >
-              Cancel
-            </LoadingButton>
-          ) : null}
-        </Stack>
-      </FormProvider>
-    </Container>
+            {!isAuthenticated ? (
+              <LoadingButton
+                fullWidth
+                size="large"
+                variant="contained"
+                loading={isLoading}
+                onClick={handleLogin}
+              >
+                Login to Apply
+              </LoadingButton>
+            ) : null}
+            {currentApplication.jobId === jobId &&
+            (currentApplication.status === "pending" ||
+              currentApplication.status === "approved") ? (
+              <LoadingButton
+                fullWidth
+                size="large"
+                variant="contained"
+                loading={isLoading}
+                onClick={handleCancel}
+              >
+                Cancel
+              </LoadingButton>
+            ) : null}
+          </Stack>
+        </FormProvider>
+      </Container>
+    </Card>
   );
 };
 

@@ -1,10 +1,22 @@
 import { Logout, PersonAdd, Settings } from "@mui/icons-material";
-import { Avatar, Box, Button, Menu, MenuItem } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  IconButton,
+  Menu,
+  MenuItem,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import Logo from "components/Logo";
 import useAuth from "hooks/useAuth";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
+import { ColorModeContext } from "theme";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
 
 import "./MainHeader.scss";
 
@@ -72,19 +84,28 @@ const NAV_ITEMS = [
 
 const MainHeader = () => {
   const { isAuthenticated, user, logout } = useAuth();
-  // let { currentUser } = useSelector((state) => state.user);
 
-  // if (currentUser === null) currentUser = { ...user };
-  // useEffect(() => {
-  //   if (currentUser === null) currentUser = { ...user };
-  //   }, [currentUser, user]);
-
+  const theme = useTheme();
+  const colorMode = useContext(ColorModeContext);
   return (
-    <Box id="nav">
+    <Box
+      id="nav"
+      sx={{
+        position: "fixed",
+        zIndex: 10,
+        width: "100vw",
+        backgroundColor: theme.palette.header,
+      }}
+    >
       <Box className="container">
         <Box className="logo">
           <Logo sx={{ height: "2.5rem" }} />
-          Volun
+          <Typography
+            component="span"
+            sx={{ fontSize: "2rem", fontWeight: "bold" }}
+          >
+            Volun
+          </Typography>
           <span className="red">Cheers</span>
         </Box>
 
@@ -109,6 +130,31 @@ const MainHeader = () => {
                 Login
               </NavLink>
             )}
+          </li>
+          <li>
+            <Box
+              sx={{
+                display: "flex",
+                width: "100%",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "text.primary",
+                borderRadius: 1,
+                p: 0.5,
+              }}
+            >
+              <IconButton
+                sx={{ ml: 1 }}
+                onClick={colorMode.toggleColorMode}
+                color="inherit"
+              >
+                {theme.palette.mode === "dark" ? (
+                  <Brightness7Icon />
+                ) : (
+                  <Brightness4Icon />
+                )}
+              </IconButton>
+            </Box>
           </li>
         </ul>
       </Box>

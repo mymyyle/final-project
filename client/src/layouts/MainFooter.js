@@ -1,10 +1,11 @@
 import React from "react";
 import "./MainFooter.scss";
 import Logo from "components/Logo";
+import { Box } from "@mui/material";
 
 const MainFooter = () => {
   return (
-    <div id="main-footer">
+    <Box id="main-footer" sx={{ zIndex: "2" }}>
       <div className="container footer-container">
         <div>
           <div className="logo">
@@ -63,7 +64,7 @@ const MainFooter = () => {
           </a>
         </div>
       </div>
-    </div>
+    </Box>
   );
 };
 

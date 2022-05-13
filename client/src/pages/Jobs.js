@@ -8,6 +8,7 @@ import {
   Divider,
   Grid,
   Pagination,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
@@ -28,7 +29,6 @@ const Jobs = () => {
   const [filterLocation, setFilterLocation] = useState("");
   const [filterType, setFilterType] = useState("");
   const [page, setPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(6);
 
   useEffect(() => {
     dispatch(
@@ -63,8 +63,7 @@ const Jobs = () => {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        marginTop: "0.5rem",
-        marginBottom: "0.5rem",
+        margin: { xs: "auto", md: "0.5rem auto" },
         minHeight: "80vh",
       }}
     >
@@ -77,89 +76,105 @@ const Jobs = () => {
           display: "block",
           objectFit: "cover",
           objectPosition: "10px 10px",
-          width: "90vw",
+          maxWidth: "90vw",
           margin: "auto",
         }}
       /> */}
-      <SearchInput
-        placeholder={`Search by Job's Name`}
-        handleSubmit={handleSubmit}
-      />
-      <Grid container spacing={3} sx={{ margin: "auto" }}>
-        <Grid item xs={3}>
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                flexDirection: "column",
-                justifyContent: "space-around",
-                height: "50vh",
-              }}
-            >
-              <Autocomplete
-                id="search-type"
-                onInputChange={(event, newInputValue) => {
-                  setFilterType(newInputValue);
-                }}
-                options={["Full time", "Part time", "Temporary"]}
-                sx={{ width: 200, height: 1.5 }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Search by Type"
-                    InputProps={{
-                      ...params.InputProps,
-                    }}
-                  />
-                )}
-              />
 
-              <Autocomplete
-                id="search-category"
-                onInputChange={(event, newInputValue) => {
-                  setFilterCategory(newInputValue);
-                }}
-                options={["Community", "Environment", "Heath care"]}
-                sx={{ width: 200, height: 1.5 }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Search by Category"
-                    InputProps={{
-                      ...params.InputProps,
-                    }}
-                  />
-                )}
-              />
+      <Box
+        sx={{
+          display: "flex",
+          width: "95%",
+          flexDirection: { xs: "column", md: "row" },
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <SearchInput
+          placeholder={`Search by Job's Name`}
+          handleSubmit={handleSubmit}
+        />
 
-              <LocationInput onInputChange={setFilterLocation} />
-            </Box>
-          </Box>
-        </Grid>
-        <Grid item xs={9}>
-          <Box>
-            <Typography
-              variant="subtitle"
-              sx={{ color: "text.secondary", ml: 1 }}
-            >
-              {totalJobs > 1
-                ? `${totalJobs} jobs found`
-                : totalJobs === 1
-                ? `${totalJobs} job found`
-                : "No job found"}
-            </Typography>
-            {jobIds.map((jobId) => (
-              <JobItem job={jobs[jobId]} />
-            ))}
-            <Pagination
-              count={totalPages}
-              page={page}
-              onChange={handleChangePage}
-            />
-          </Box>
-        </Grid>
+        <Stack
+          spacing={0.5}
+          sx={{
+            mt: "0.5rem",
+            display: "flex",
+            alignItems: "center",
+            flexDirection: { xs: "column", md: "row" },
+            justifyContent: "flex-ends",
+          }}
+        >
+          <Autocomplete
+            id="search-type"
+            onInputChange={(event, newInputValue) => {
+              setFilterType(newInputValue);
+            }}
+            options={["Full time", "Part time", "Temporary"]}
+            size={"small"}
+            style={{ width: 200, marginRight: 25 }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Search by Type"
+                InputProps={{
+                  ...params.InputProps,
+                  style: { height: 40 },
+                }}
+              />
+            )}
+          />
+          <Autocomplete
+            id="search-category"
+            size={"small"}
+            style={{ width: 200, marginRight: 25 }}
+            onInputChange={(event, newInputValue) => {
+              setFilterCategory(newInputValue);
+            }}
+            options={["Community", "Environment", "Heath care"]}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Search by Category"
+                InputProps={{
+                  ...params.InputProps,
+                  style: { height: 40 },
+                }}
+              />
+            )}
+          />
+          <LocationInput onInputChange={setFilterLocation} />
+        </Stack>
+      </Box>
+      <Typography
+        variant="subtitle"
+        sx={{
+          color: "text.secondary",
+          m: "1rem 0 0 1.7rem",
+          alignSelf: "start",
+        }}
+      >
+        {totalJobs > 1
+          ? `${totalJobs} jobs found`
+          : totalJobs === 1
+          ? `${totalJobs} job found`
+          : "No job found"}
+      </Typography>
+      <Grid container sx={{ margin: "auto" }}>
+        {/* <Grid item xs={3}></Grid> */}
+
+        {jobIds.map((jobId) => (
+          <Grid item lg={6} xs={12} sx={{ padding: 0, mb: "1rem" }}>
+            <JobItem job={jobs[jobId]} />
+          </Grid>
+        ))}
       </Grid>
+      <Pagination
+        sx={{ m: "1rem  auto" }}
+        count={totalPages}
+        page={page}
+        onChange={handleChangePage}
+      />
     </Container>
   );
 };

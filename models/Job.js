@@ -12,7 +12,7 @@ const jobSchema = Schema(
     },
     category: {
       type: String,
-      enum: ["Community", "Environment", "Health care"],
+      enum: ["Community", "Environment", "Healthcare"],
       required: true,
     },
     description: { type: String, required: true },

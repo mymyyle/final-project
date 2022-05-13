@@ -1,14 +1,90 @@
-import { Typography } from "@mui/material";
+import { Card, CardMedia, Chip, Stack, Typography } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
+import FmdGoodIcon from "@mui/icons-material/FmdGood";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import CategoryIcon from "@mui/icons-material/Category";
+import { fToNow } from "utils/formatTime";
+import { Box } from "@mui/system";
 
 const DetailsJob = () => {
   const { currentJob } = useSelector((state) => state.job);
-  console.log(`=========>job`, currentJob);
+  const {
+    name,
+    type,
+    category,
+    description,
+    location,
+    imageUrl,
+    createdAt,
+    authorId: author,
+  } = currentJob;
+
   return (
-    <div>
-      <Typography> DetailsJob{currentJob.name}</Typography>
-    </div>
+    <>
+      {currentJob && (
+        <Card sx={{ padding: "1rem 1.5rem", mb: "1rem" }}>
+          <Typography variant="h4">{name}</Typography>
+          <Stack
+            spacing={1}
+            direction={{ sm: "row", xs: "column" }}
+            sx={{
+              m: "0.5rem 0 1rem 0",
+              display: "flex",
+              flexWrap: "wrap",
+              alignItems: { sm: "center", xs: "flex-start" },
+              fontSize: "16px",
+              color: "#616161",
+            }}
+          >
+            <Typography sx={{ display: "flex", alignItems: "center" }}>
+              <FmdGoodIcon /> {location}
+            </Typography>
+
+            <Typography sx={{ display: "flex", alignItems: "center" }}>
+              <AccessTimeIcon /> {createdAt && fToNow(createdAt)}
+            </Typography>
+
+            <Typography sx={{ display: "flex", alignItems: "center" }}>
+              <CategoryIcon />
+              {category}
+            </Typography>
+          </Stack>
+          <Chip
+            label={type}
+            sx={{
+              fontWeight: 500,
+              fontSize: "16px",
+              padding: "0.25rem 0.5rem",
+              border: "2px solid",
+            }}
+            variant="outlined"
+            color={
+              type === "Full time"
+                ? "success"
+                : type === "Temporary"
+                ? "warning"
+                : "secondary"
+            }
+          />
+
+          {imageUrl && (
+            <Box
+              component="img"
+              src={imageUrl}
+              alt="img"
+              maxWidth="90%"
+              maxHeight="70%"
+              margin="0.5rem 0"
+            />
+          )}
+          <Typography variant="h5">Job description</Typography>
+          <Box variant="b1" sx={{ textIndent: "50px", textAlign: "justify" }}>
+            {description}
+          </Box>
+        </Card>
+      )}
+    </>
   );
 };
 

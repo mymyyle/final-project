@@ -15,7 +15,7 @@ const SearchInput = ({ placeholder, handleSubmit }) => {
         value={searchQuery}
         placeholder={placeholder}
         onChange={(event) => setSearchQuery(event.target.value)}
-        sx={{ width: 450 }}
+        sx={{ width: 350 }}
         size="small"
         InputProps={{
           endAdornment: (
