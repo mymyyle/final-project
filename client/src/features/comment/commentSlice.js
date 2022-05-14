@@ -1,6 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import apiService from "app/apiService";
 import { stringify } from "query-string";
+import { LIMIT_COMMENT_PER_PAGE } from "constants/index";
+
+const LIMIT = LIMIT_COMMENT_PER_PAGE;
 
 const initialState = {
   isLoading: false,
@@ -25,6 +28,10 @@ const slice = createSlice({
     createCommentSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
+      console.log("cmt before", state.commentIds);
+      if (state.commentIds.length % LIMIT === 0) state.commentIds.pop();
+      console.log("cmt after", state.commentIds);
+
       state.commentIds.unshift(action.payload._id);
       state.comments[action.payload._id] = action.payload;
       state.totalComments = state.totalComments + 1;

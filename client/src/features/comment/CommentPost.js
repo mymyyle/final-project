@@ -19,7 +19,7 @@ const defaultValues = {
   content: "",
 };
 
-const CommentPost = () => {
+const CommentPost = ({ setPage }) => {
   const methods = useForm({
     resolver: yupResolver(NewCommentSchema),
     defaultValues,
@@ -34,7 +34,7 @@ const CommentPost = () => {
 
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.comment);
-  // const { jobId } = useParams();
+
   const { currentJob } = useSelector((state) => state.job);
 
   const onSubmit = async (data) => {

@@ -32,6 +32,7 @@ const slice = createSlice({
       state.jobIds = [...state.jobIds];
       state.jobIds.unshift(action.payload._id);
       state.jobs[action.payload._id] = action.payload;
+      console.log(`create success`, state.jobIds[0]);
     },
     editJobSuccess(state, action) {
       state.isLoading = false;
@@ -98,6 +99,8 @@ export const createJob =
         category,
       });
       dispatch(slice.actions.createJobSuccess(response.data));
+
+      return response.data;
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
     }
@@ -118,15 +121,19 @@ export const editJob =
   ) =>
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
-    let status;
+    let status, img;
     if (data.status !== "ongoing") status = "done";
+
+    if (imageUrl instanceof File) {
+      img = await cloudinaryUpload(imageUrl);
+    } else img = imageUrl;
     try {
       const response = await apiService.put(`/job/update/${jobId}`, {
         name,
         type,
         location,
         description,
-        imageUrl,
+        imageUrl: img,
         detailedInformation,
         category,
         status,

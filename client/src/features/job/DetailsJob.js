@@ -79,7 +79,10 @@ const DetailsJob = () => {
             />
           )}
           <Typography variant="h5">Job description</Typography>
-          <Box variant="b1" sx={{ textIndent: "50px", textAlign: "justify" }}>
+          <Box
+            variant="body1"
+            sx={{ textIndent: "50px", textAlign: "justify" }}
+          >
             {description}
           </Box>
         </Card>

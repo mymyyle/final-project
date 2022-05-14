@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -12,7 +12,12 @@ import {
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { useDispatch, useSelector } from "react-redux";
-import { FormProvider, FRadioGroup, FTextField } from "components/form";
+import {
+  FormProvider,
+  FRadioGroup,
+  FTextField,
+  FUploadImage,
+} from "components/form";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { editJob, getJobById } from "features/job/jobSlice";
 import { Box } from "@mui/system";
@@ -38,6 +43,7 @@ const EditJobPage = () => {
   const {
     handleSubmit,
     reset,
+    setValue,
     setError,
     formState: { errors, isSubmitting },
   } = methods;
@@ -64,9 +70,24 @@ const EditJobPage = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
+    console.log("submit data", data);
+
     dispatch(editJob(jobId, { ...data, location })).then(() => reset());
     navigate("/account");
   };
+
+  const handleDrop = useCallback(
+    (acceptedFiles) => {
+      const file = acceptedFiles[0];
+      if (file) {
+        setValue(
+          "imageUrl",
+          Object.assign(file, { preview: URL.createObjectURL(file) })
+        );
+      }
+    },
+    [setValue]
+  );
   return (
     <>
       <Container
@@ -134,7 +155,13 @@ const EditJobPage = () => {
               label="category"
               options={["Community", "Environment", "Healthcare"]}
             />
-            <FTextField name="imageUrl" label="Image Link" />
+            {/* <FTextField name="imageUrl" label="Image Link" /> */}
+            <FUploadImage
+              name="imageUrl"
+              accept="image/*"
+              maxSize={3145728}
+              onDrop={handleDrop}
+            />
 
             <FTextField
               multiline

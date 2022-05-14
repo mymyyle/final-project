@@ -66,9 +66,9 @@ const UpdateProfile = () => {
 
   const dispatch = useDispatch();
   const onSubmit = async (data) => {
-    if (!data.avatarUrl) data.avatarUrl = user.avatarUrl;
     dispatch(updateAccount(data)).then(() => reset());
   };
+
   const handleDrop = useCallback(
     (acceptedFiles) => {
       const file = acceptedFiles[0];

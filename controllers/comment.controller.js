@@ -123,7 +123,7 @@ commentController.getAllCommentByJobId = catchAsync(async (req, res, next) => {
   let { page, limit, sort, reply } = req.query;
   page = parseInt(page) || 1;
   limit = parseInt(limit) || 5;
-  sort = sort === "desc" ? 1 : -1;
+  sort = sort === "asc" ? -1 : 1;
 
   const filterCriteria =
     reply === "missing" ? { $and: [{ jobId }, { reply: "" }] } : { jobId };
@@ -131,7 +131,12 @@ commentController.getAllCommentByJobId = catchAsync(async (req, res, next) => {
   const count = commentList.length;
   const totalPage = Math.ceil(count / limit);
 
-  const offset = limit * (page - 1);
+  // const offset = limit * (page - 1);
+  let offset = count - limit * page;
+  if (offset < 0) {
+    limit = limit + offset;
+    offset = 0;
+  }
 
   commentList = await Comment.find(filterCriteria)
     .sort({ createdAt: sort })
@@ -148,4 +153,13 @@ commentController.getAllCommentByJobId = catchAsync(async (req, res, next) => {
   );
 });
 
+// 1 2 3 4 5
+
+// dong 137 => 5 4 3 2 1
+
+//11cmt, limit 3
+//page 1: 8-10 ---> 11-3,
+//page 2: 5 6 7---> 11-3*2,
+//page 3: 2 3 4--> 11-3*3,
+//page 4: 0 1 -->count-limit*page<0-->0   ,
 module.exports = commentController;

@@ -50,7 +50,7 @@ export const updateAccount =
       if (avatarUrl instanceof File) {
         const imageUrl = await cloudinaryUpload(avatarUrl);
         data.avatarUrl = imageUrl;
-      }
+      } else data.avatarUrl = avatarUrl;
       console.log(data);
       const response = await apiService.put("/user/me/update", data);
       dispatch(slice.actions.updateAccountSuccess(response.data));

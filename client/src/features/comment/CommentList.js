@@ -15,8 +15,9 @@ import { flexbox } from "@mui/system";
 import EditQuestion from "./EditQuestion";
 import useAuth from "hooks/useAuth";
 import Comment from "./Comment";
+import { LIMIT_COMMENT_PER_PAGE } from "constants/index";
 
-const LIMIT = 3;
+const LIMIT = LIMIT_COMMENT_PER_PAGE;
 const CommentList = () => {
   const dispatch = useDispatch();
   const { comments, commentIds, totalPages, totalComments } = useSelector(
@@ -36,7 +37,6 @@ const CommentList = () => {
 
   return (
     <>
-      {/* {(commentIds?.length === 0) ? <Typography>No comment yet</Typography>:()} */}
       <Box
         sx={{ display: "flex", justifyContent: "space-between", mb: "0.5rem" }}
       >
@@ -60,6 +60,7 @@ const CommentList = () => {
           onInputChange={(event, newInputValue) => {
             if (newInputValue === "No answer") setStatus("missing");
             else setStatus(newInputValue);
+            setPage(1);
           }}
           size={"small"}
           style={{ width: 200, marginRight: 25 }}

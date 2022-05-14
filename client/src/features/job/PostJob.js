@@ -54,11 +54,11 @@ const PostJob = () => {
   } = methods;
 
   const dispatch = useDispatch();
-  const { isLoading, jobIds } = useSelector((state) => state.job);
+  const { isLoading, jobIds, jobs } = useSelector((state) => state.job);
   const navigate = useNavigate();
   const onSubmit = async (data) => {
-    dispatch(createJob({ ...data, location })).then(() => reset());
-    navigate(`/job/${jobIds[0]}`);
+    const jobData = await dispatch(createJob({ ...data, location }));
+    navigate(`/job/${jobData._id}`);
   };
 
   const handleDrop = useCallback(

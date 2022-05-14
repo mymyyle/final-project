@@ -48,6 +48,7 @@ const ManageApplication = () => {
   };
   const handleSubmit = (searchQuery) => {
     setFilterName(searchQuery);
+    setPage(0);
   };
   return (
     <div>

@@ -14,9 +14,8 @@ import {
 } from "@mui/material";
 import SearchInput from "components/SearchInput";
 import Autocomplete from "@mui/material/Autocomplete";
-import LocationInput from "components/LocationInput";
 import JobItem from "features/job/JobItem";
-
+import dataLocation from "local.json";
 const LIMIT = 6;
 const Jobs = () => {
   const dispatch = useDispatch();
@@ -43,9 +42,6 @@ const Jobs = () => {
     );
   }, [filterName, filterCategory, filterLocation, filterType, page]);
 
-  // if (isLoading) {
-  //   return <LoadingScreen />;
-  // }
   console.log("filterType", filterType);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -53,6 +49,7 @@ const Jobs = () => {
 
   const handleSubmit = (searchQuery) => {
     setFilterName(searchQuery);
+    setPage(1);
   };
 
   return (
@@ -109,6 +106,7 @@ const Jobs = () => {
             id="search-type"
             onInputChange={(event, newInputValue) => {
               setFilterType(newInputValue);
+              setPage(1);
             }}
             options={["Full time", "Part time", "Temporary"]}
             size={"small"}
@@ -130,8 +128,9 @@ const Jobs = () => {
             style={{ width: 200, marginRight: 25 }}
             onInputChange={(event, newInputValue) => {
               setFilterCategory(newInputValue);
+              setPage(1);
             }}
-            options={["Community", "Environment", "Heath care"]}
+            options={["Community", "Environment", "Healthcare"]}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -143,7 +142,29 @@ const Jobs = () => {
               />
             )}
           />
-          <LocationInput onInputChange={setFilterLocation} />
+
+          {dataLocation && (
+            <Autocomplete
+              id="search-location"
+              onInputChange={(event, newInputValue) => {
+                setFilterLocation(newInputValue);
+                setPage(1);
+              }}
+              size={"small"}
+              style={{ width: 200, marginRight: 25 }}
+              options={dataLocation.map((location) => location.name)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Search by Location"
+                  InputProps={{
+                    ...params.InputProps,
+                    style: { height: 40 },
+                  }}
+                />
+              )}
+            />
+          )}
         </Stack>
       </Box>
       <Typography

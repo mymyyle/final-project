@@ -109,13 +109,13 @@ const Comment = ({ comment }) => {
                         },
                       },
                     ]}
-                    variant="b1"
+                    variant="body1"
                   >
                     {questioner.name}
                   </Typography>
                   <Typography
                     sx={{ ml: "1rem", wordBreak: "break-word" }}
-                    variant="b1"
+                    variant="body1"
                   >
                     {comment.content}
                   </Typography>
@@ -226,13 +226,13 @@ const Comment = ({ comment }) => {
                         },
                       },
                     ]}
-                    variant="b1"
+                    variant="body1"
                   >
                     {questioner.name}
                   </Typography>
                   <Typography
                     sx={{ ml: "1rem", wordBreak: "break-word" }}
-                    variant="b1"
+                    variant="body1"
                   >
                     {comment.reply}
                   </Typography>

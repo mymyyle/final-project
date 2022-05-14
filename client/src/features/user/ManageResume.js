@@ -12,7 +12,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { deleteJob, getJobOfCurrentUser } from "features/job/jobSlice";
+import { getJobOfCurrentUser } from "features/job/jobSlice";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -47,6 +47,7 @@ const ManageResume = () => {
   };
   const handleSubmit = (searchQuery) => {
     setFilterName(searchQuery);
+    setPage(0);
   };
   return (
     <div>
