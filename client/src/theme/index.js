@@ -88,7 +88,7 @@ function ThemeProvider({ children }) {
             primary: PRIMARY,
             secondary: SECONDARY,
             success: SUCCESS,
-            header: "#ecf0f1",
+            header: "#fff",
             comment: "rgb(240, 242, 245)",
 
             text: {
@@ -98,7 +98,7 @@ function ThemeProvider({ children }) {
             },
             background: {
               paper: "#fff",
-              default: "rgba(255, 255, 254, 0.05)",
+              default: "rgba(230, 230, 230,0.05)",
               neutral: GREY[200],
             },
             action: {
@@ -128,8 +128,6 @@ function ThemeProvider({ children }) {
             },
           },
         };
-  // codercomm
-  // const theme = createTheme(themeOptions);
 
   const colorMode = useMemo(
     () => ({

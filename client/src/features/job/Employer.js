@@ -16,7 +16,11 @@ export const Employer = () => {
     <>
       {author && (
         <Card
-          sx={{ padding: "1.75rem", position: "fixed", width: { sm: "25%" } }}
+          sx={{
+            padding: "1.75rem",
+            position: { sm: "fixed" },
+            width: { sm: "25%" },
+          }}
         >
           <Box
             sx={{
@@ -28,9 +32,9 @@ export const Employer = () => {
           >
             <Box>
               {!author.avatarUrl ? (
-                <Avatar sx={{ backgroundColor: "#ffa502" }}>
-                  {author.name[0]}
-                </Avatar>
+                <Avatar
+                  sx={{ width: 80, height: 80, backgroundColor: "#ffa502" }}
+                ></Avatar>
               ) : (
                 <Avatar
                   alt={author.name}
@@ -56,8 +60,8 @@ export const Employer = () => {
             <Typography>{author.email}</Typography>
           </Box>
           <Typography sx={{ textIndent: "50px", textAlign: "justify" }}>
-            {author.aboutMe.slice(0, 110)}
-            {author.aboutMe.length > 110 && `...`}
+            {author?.aboutMe?.slice(0, 110)}
+            {author?.aboutMe?.length > 110 && `...`}
           </Typography>
         </Card>
       )}

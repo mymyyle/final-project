@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import apiService from "app/apiService";
 import useAuth from "hooks/useAuth";
+import { cloudinaryUpload } from "utils/cloudinary";
 
 const initialState = {
   isLoading: false,
@@ -39,13 +40,18 @@ const slice = createSlice({
 });
 
 export const updateAccount =
-  ({ password, passwordConfirmation, ...data }) =>
+  ({ password, passwordConfirmation, avatarUrl, ...data }) =>
   async (dispatch) => {
     data.newPassword = password;
     data.confirmPassword = passwordConfirmation;
 
     dispatch(slice.actions.startLoading());
     try {
+      if (avatarUrl instanceof File) {
+        const imageUrl = await cloudinaryUpload(avatarUrl);
+        data.avatarUrl = imageUrl;
+      }
+      console.log(data);
       const response = await apiService.put("/user/me/update", data);
       dispatch(slice.actions.updateAccountSuccess(response.data));
     } catch (error) {

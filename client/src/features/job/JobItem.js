@@ -19,7 +19,9 @@ const JobItem = ({ job }) => {
           mb: "1rem",
           display: "flex",
           alignItems: "center",
+          justifyContent: "start",
           padding: "1rem 2rem ",
+          minHeight: "168px",
           width: { xs: "350px", sm: "650px", lg: "550px" },
           borderRadius: "15px",
           margin: "0 auto",
@@ -34,12 +36,18 @@ const JobItem = ({ job }) => {
       <Avatar
         alt={job.authorId.name}
         src={job.authorId.avatarUrl}
-        sx={{ width: 80, height: 80, alignSelf: "start" }}
+        sx={{ width: 90, height: 90, alignSelf: "start", mt: "0.75rem" }}
       />
-      <Box sx={{ ml: { md: "1.5rem", xs: "0.5rem" } }}>
+      <Box
+        sx={{
+          ml: { md: "1.5rem", xs: "0.5rem" },
+          display: "flex",
+          justifyContent: "space-between",
+          flexDirection: "column",
+        }}
+      >
         <Typography
           variant="h6"
-          //  color="#616161"
           onClick={handleClickName}
           sx={[
             { fontWeight: 550 },
@@ -60,6 +68,7 @@ const JobItem = ({ job }) => {
             m: "0.5rem 0 1rem 0",
             display: "flex",
             flexWrap: "wrap",
+            gap: "3px",
             alignItems: { sm: "center", xs: "flex-start" },
             fontSize: "16px",
             color: "#616161",
@@ -70,12 +79,12 @@ const JobItem = ({ job }) => {
           </Typography>
 
           <Typography sx={{ display: "flex", alignItems: "center" }}>
-            <AccessTimeIcon /> {fToNow(job.createdAt)}
+            <CategoryIcon />
+            {job.category}
           </Typography>
 
           <Typography sx={{ display: "flex", alignItems: "center" }}>
-            <CategoryIcon />
-            {job.category}
+            <AccessTimeIcon /> {fToNow(job.createdAt)}
           </Typography>
         </Stack>
         <Chip
@@ -85,6 +94,7 @@ const JobItem = ({ job }) => {
             fontSize: "16px",
             padding: "0.25rem 0.5rem",
             border: "2px solid",
+            maxWidth: 130,
           }}
           variant="outlined"
           color={

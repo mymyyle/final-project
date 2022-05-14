@@ -2,20 +2,27 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { Alert, Container, Stack, Typography } from "@mui/material";
+import {
+  Alert,
+  Autocomplete,
+  Container,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { useDispatch, useSelector } from "react-redux";
 import { FormProvider, FRadioGroup, FTextField } from "components/form";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { editJob, getJobById } from "features/job/jobSlice";
 import { Box } from "@mui/system";
+import dataLocation from "local.json";
 
 const EditJobPage = () => {
   const { jobId } = useParams();
   const defaultValues = {
     name: "",
     type: "",
-    location: "",
     description: "",
     imageUrl: "",
     detailedInformation: "",
@@ -38,25 +45,26 @@ const EditJobPage = () => {
   useEffect(() => {
     dispatch(getJobById(jobId));
   }, []);
+  const [location, setLocation] = useState();
 
   useEffect(() => {
     reset({
       name: currentJob.name,
       type: currentJob.type,
-      location: currentJob.location,
       description: currentJob.description,
       imageUrl: currentJob.imageUrl,
       detailedInformation: currentJob.detailedInformation,
       category: currentJob.category,
       status: "ongoing",
     });
+    setLocation(currentJob.location);
   }, [currentJob]);
-
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.job);
   const navigate = useNavigate();
+
   const onSubmit = async (data) => {
-    dispatch(editJob(jobId, data)).then(() => reset());
+    dispatch(editJob(jobId, { ...data, location })).then(() => reset());
     navigate("/account");
   };
   return (
@@ -83,11 +91,30 @@ const EditJobPage = () => {
               />
             </Box>
             <FTextField name="name" label="Job Title" />
-            <FTextField
-              name="location"
-              label="Location"
-              placeholder="Ho Chi Minh, VN"
-            />
+
+            {dataLocation && (
+              <Autocomplete
+                id="location"
+                onInputChange={(event, newInputValue) => {
+                  setLocation(newInputValue);
+                }}
+                defaultValue={currentJob.location}
+                name="location"
+                size={"small"}
+                style={{ width: 200, marginRight: 25, height: 55 }}
+                options={dataLocation.map((location) => location.name)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Location"
+                    InputProps={{
+                      ...params.InputProps,
+                      style: { height: 55 },
+                    }}
+                  />
+                )}
+              />
+            )}
             <FTextField
               name="description"
               label="Job Description"

@@ -1,6 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import apiService from "app/apiService";
 import { stringify } from "query-string";
+import { useNavigate } from "react-router-dom";
+import { cloudinaryUpload } from "utils/cloudinary";
+
 const initialState = {
   isLoading: false,
   error: null,
@@ -26,6 +29,7 @@ const slice = createSlice({
     createJobSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
+      state.jobIds = [...state.jobIds];
       state.jobIds.unshift(action.payload._id);
       state.jobs[action.payload._id] = action.payload;
     },
@@ -82,12 +86,14 @@ export const createJob =
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
+      const img = await cloudinaryUpload(imageUrl);
+
       const response = await apiService.post("/job/create", {
         name,
         type,
         location,
         description,
-        imageUrl,
+        imageUrl: img,
         detailedInformation,
         category,
       });

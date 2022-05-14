@@ -39,11 +39,10 @@ const AccountPage = () => {
   return (
     <>
       <Box>
-        AccountPage
         <Profile user={user} />
       </Box>
 
-      <Box sx={{ width: "100%", typography: "body1" }}>
+      <Box sx={{ typography: "body1" }}>
         <TabContext value={value}>
           <Box
             sx={{
@@ -58,6 +57,7 @@ const AccountPage = () => {
               variant="scrollable"
               scrollButtons
               allowScrollButtonsMobile
+              sx={{ maxWidth: "700px", m: "auto" }}
             >
               {TAB.map((tab) => (
                 <Tab
@@ -82,3 +82,4 @@ const AccountPage = () => {
 };
 
 export default AccountPage;
+// Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita, libero dicta laudantium, nulla distinctio, minima aspernatur eum quam inventore similique soluta ipsum. Impedit repellendus repudiandae minus itaque numquam deserunt praesentium recusandae commodi consequatur corporis quae vero ab, blanditiis dolorum corrupti labore ratione nisi voluptas quis repellat voluptatibus consectetur modi ex!

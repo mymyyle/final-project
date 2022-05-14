@@ -18,7 +18,7 @@ const jobSchema = Schema(
     description: { type: String, required: true },
     location: { type: String, required: true },
     imageUrl: { type: String },
-    detailedInformation: { type: String, required: true },
+    detailedInformation: { type: String },
     isDeleted: { type: Boolean, default: false },
     isFeatured: { type: String, default: "false" },
     status: { type: String, enum: ["done", "ongoing"], default: "ongoing" },

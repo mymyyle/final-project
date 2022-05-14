@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import useAuth from "hooks/useAuth";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -14,7 +14,7 @@ import {
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { LoadingButton } from "@mui/lab";
-import { FormProvider, FTextField } from "components/form";
+import { FormProvider, FTextField, FUploadImage } from "components/form";
 import { useDispatch, useSelector } from "react-redux";
 import { deactivateAccount, updateAccount } from "./userSlice";
 
@@ -27,14 +27,6 @@ const UpdateProfileSchema = Yup.object().shape({
   ),
 });
 
-const defaultValues = {
-  password: "",
-  passwordConfirmation: "",
-  name: "",
-  avatarUrl: "",
-  aboutMe: "",
-};
-
 const UpdateProfile = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -43,6 +35,13 @@ const UpdateProfile = () => {
   const [showPasswordConfirmation, setShowPasswordConfirmation] =
     useState(false);
 
+  const defaultValues = {
+    password: "",
+    passwordConfirmation: "",
+    name: user.name || "",
+    avatarUrl: user.avatarUrl || "",
+    aboutMe: user.aboutMe || "",
+  };
   useEffect(() => {
     reset({
       password: "",
@@ -52,6 +51,7 @@ const UpdateProfile = () => {
       aboutMe: user.aboutMe,
     });
   }, [user]);
+
   const methods = useForm({
     resolver: yupResolver(UpdateProfileSchema),
     defaultValues,
@@ -60,14 +60,27 @@ const UpdateProfile = () => {
   const {
     handleSubmit,
     reset,
+    setValue,
     formState: { isSubmitting },
   } = methods;
 
   const dispatch = useDispatch();
   const onSubmit = async (data) => {
+    if (!data.avatarUrl) data.avatarUrl = user.avatarUrl;
     dispatch(updateAccount(data)).then(() => reset());
   };
-
+  const handleDrop = useCallback(
+    (acceptedFiles) => {
+      const file = acceptedFiles[0];
+      if (file) {
+        setValue(
+          "avatarUrl",
+          Object.assign(file, { preview: URL.createObjectURL(file) })
+        );
+      }
+    },
+    [setValue]
+  );
   const handleDeactivate = () => {
     dispatch(deactivateAccount());
     logout(() => {
@@ -75,13 +88,20 @@ const UpdateProfile = () => {
     });
   };
   return (
-    <Container maxWidth="xs">
+    <Container maxWidth="md" sx={{ mt: "1rem" }}>
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={3} sx={{ marginBottom: 3 }}>
           {error && <Alert severity="error">{error} </Alert>}
 
           <FTextField name="name" label="Name" />
-          <FTextField name="avatarUrl" label="Link Avatar" />
+          {/* <FTextField name="avatarUrl" label="Link Avatar" /> */}
+          <FUploadImage
+            name="avatarUrl"
+            accept="image/*"
+            maxSize={3145728}
+            onDrop={handleDrop}
+          />
+
           <FTextField
             multiline
             rows={4}

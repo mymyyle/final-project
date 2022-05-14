@@ -5,22 +5,19 @@ const Job = require("../models/Job");
 // 1. User can create a job
 jobController.createJob = catchAsync(async (req, res, next) => {
   const { currentUserId } = req;
-  const allows = [
-    "name",
-    "type",
-    "category",
-    "description",
-    "location",
-    "imageUrl",
-    "detailedInformation",
-  ];
+  const { imageUrl, detailedInformation } = req.body;
+  const allows = ["name", "type", "category", "description", "location"];
   const newJob = {};
   newJob.authorId = currentUserId;
   allows.forEach((field) => {
-    if (!req.body[field]) throwError(400, "Missing info", "create job error");
+    if (!req.body[field])
+      throwError(400, `${field} is required`, "create job error");
     else newJob[field] = req.body[field];
   });
+  newJob.imageUrl = imageUrl || "";
+  newJob.detailedInformation = detailedInformation || "";
   const job = await Job.create(newJob);
+  await job.populate("authorId");
   return sendResponse(res, 200, true, job, null, "create job successful");
 });
 

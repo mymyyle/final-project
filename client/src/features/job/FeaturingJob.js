@@ -1,4 +1,4 @@
-import { Container, Grid } from "@mui/material";
+import { Container, Grid, Typography } from "@mui/material";
 import LoadingScreen from "components/LoadingScreen";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,8 +27,18 @@ const FeaturingJob = () => {
           alignItems: "center",
           marginTop: "1rem",
           marginBottom: "1rem",
+          flexDirection: "column",
         }}
       >
+        <Typography variant="h3" sx={{ fontWeight: 600, mb: "1rem" }}>
+          Upcoming Job
+        </Typography>
+        <Typography
+          variant="b1"
+          sx={{ color: "#ff7675", fontWeight: 600, mb: "1.5rem" }}
+        >
+          _____ Upcoming Job _____
+        </Typography>
         <Grid container spacing={3}>
           {jobIds.map((jobId) => (
             <Grid key={jobId} item lg={4} sm={6} xs={12}>
