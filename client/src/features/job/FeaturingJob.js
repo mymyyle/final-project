@@ -31,13 +31,13 @@ const FeaturingJob = () => {
         }}
       >
         <Typography variant="h3" sx={{ fontWeight: 600, mb: "1rem" }}>
-          Upcoming Job
+          Featuring Job
         </Typography>
         <Typography
           variant="body1"
           sx={{ color: "#ff7675", fontWeight: 600, mb: "1.5rem" }}
         >
-          _____ Upcoming Job _____
+          _____ Upcoming ____
         </Typography>
         <Grid container spacing={3}>
           {jobIds.map((jobId) => (

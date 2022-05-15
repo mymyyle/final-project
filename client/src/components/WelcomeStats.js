@@ -4,53 +4,67 @@ import { useSpring, animated } from "react-spring";
 
 import useIntersectionObserver from "../hooks/useIntersectionObserver";
 
-const WelcomeStats = ({ text, percent }) => {
+const AnimatedBox = animated(Box);
+const AnimatedTypography = animated(Typography);
+
+const ANIMATED_DURATION = 1000;
+
+const WelcomeStats = ({ text, percent = 100 }) => {
   const theme = useTheme();
   const triggerRef = useRef();
   const dataRef = useIntersectionObserver(triggerRef);
 
+  const { number } = useSpring({
+    config: { duration: ANIMATED_DURATION },
+    from: { number: 0 },
+    number: 100,
+    to: dataRef?.isIntersecting ? percent : 0,
+  });
+
   const statStyle = useSpring({
-    config: { duration: 2000 },
-    from: { opacity: 0 },
+    config: { duration: ANIMATED_DURATION },
+    from: {
+      width: "0%",
+    },
     to: {
-      opacity: dataRef?.isIntersecting ? 1 : 0,
+      width: dataRef?.isIntersecting ? `${percent}%` : 0,
     },
   });
 
   return (
     <Box ref={triggerRef}>
       <Typography sx={{ fontWeight: 600, mb: "0.5rem" }}>{text}</Typography>
-      <animated.div style={statStyle}>
-        <Box
+
+      <AnimatedBox
+        sx={{
+          width: "90%",
+          height: "15px",
+          bgcolor: "#eff5f4",
+          borderRadius: "8px",
+        }}
+      >
+        <AnimatedBox
+          style={statStyle}
           sx={{
-            width: "90%",
+            maxWidth: "100%",
             height: "15px",
-            bgcolor: "#eff5f4",
+            bgcolor: theme.palette.main,
             borderRadius: "8px",
+            overflow: "hidden",
+          }}
+        />
+        <AnimatedTypography
+          style={statStyle}
+          sx={{
+            color: theme.palette.main,
+            fontSize: "16px",
+            fontWeight: 600,
+            textAlign: "right",
           }}
         >
-          <Box
-            sx={{
-              width: percent,
-              maxWidth: "100%",
-              height: "15px",
-              bgcolor: theme.palette.main,
-              borderRadius: "8px",
-              overflow: "hidden",
-            }}
-          />
-          <Typography
-            sx={{
-              ml: percent,
-              color: theme.palette.main,
-              fontSize: "16px",
-              fontWeight: 600,
-            }}
-          >
-            {percent}
-          </Typography>
-        </Box>
-      </animated.div>
+          {number.to((n) => `${n.toFixed(0)}%`)}
+        </AnimatedTypography>
+      </AnimatedBox>
     </Box>
   );
 };

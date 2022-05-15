@@ -97,9 +97,9 @@ const Welcome = () => {
               </Typography>
             </Box>
           </Box>
-          <WelcomeStats text="Charity" percent="53%" />
-          <WelcomeStats text="Donations" percent="79%" />
-          <WelcomeStats text="Goal" percent="42%" />
+          <WelcomeStats text="Charity" percent={53} />
+          <WelcomeStats text="Donations" percent={79} />
+          <WelcomeStats text="Goal" percent={42} />
         </Stack>
       </Box>
     </Container>
