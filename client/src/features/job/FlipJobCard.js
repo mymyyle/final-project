@@ -39,8 +39,6 @@ const FlipJobCard = ({ job }) => {
 
   const { authorId: author } = job;
 
-  console.log('job', job);
-
   return (
     <>
       <Card
@@ -171,7 +169,7 @@ const FlipJobCard = ({ job }) => {
             subheader={fDate(job.createdAt)}
           />
           <CardContent sx={{ textAlign: 'center', flex: 1 }}>
-            <Typography variant='h5' sx={{ fontFamily: 'Reey', mb: 2 }}>
+            <Typography variant='h5' sx={{ mb: 2, fontWeight: 600 }}>
               Description
             </Typography>
             <Typography variant='body1'>

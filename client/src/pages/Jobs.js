@@ -1,8 +1,8 @@
-import { Box, maxWidth } from "@mui/system";
-import LoadingScreen from "components/LoadingScreen";
-import { getJob } from "features/job/jobSlice";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { Box, maxWidth } from '@mui/system';
+import LoadingScreen from 'components/LoadingScreen';
+import { getJob } from 'features/job/jobSlice';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Container,
   Divider,
@@ -11,11 +11,11 @@ import {
   Stack,
   TextField,
   Typography,
-} from "@mui/material";
-import SearchInput from "components/SearchInput";
-import Autocomplete from "@mui/material/Autocomplete";
-import JobItem from "features/job/JobItem";
-import dataLocation from "local.json";
+} from '@mui/material';
+import SearchInput from 'components/SearchInput';
+import Autocomplete from '@mui/material/Autocomplete';
+import JobItem from 'features/job/JobItem';
+import dataLocation from 'local.json';
 const LIMIT = 6;
 const Jobs = () => {
   const dispatch = useDispatch();
@@ -23,10 +23,10 @@ const Jobs = () => {
     (state) => state.job
   );
 
-  const [filterName, setFilterName] = useState("");
-  const [filterCategory, setFilterCategory] = useState("");
-  const [filterLocation, setFilterLocation] = useState("");
-  const [filterType, setFilterType] = useState("");
+  const [filterName, setFilterName] = useState('');
+  const [filterCategory, setFilterCategory] = useState('');
+  const [filterLocation, setFilterLocation] = useState('');
+  const [filterType, setFilterType] = useState('');
   const [page, setPage] = useState(1);
 
   useEffect(() => {
@@ -42,7 +42,7 @@ const Jobs = () => {
     );
   }, [filterName, filterCategory, filterLocation, filterType, page]);
 
-  console.log("filterType", filterType);
+  console.log('filterType', filterType);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -54,14 +54,14 @@ const Jobs = () => {
 
   return (
     <Container
-      maxWidth="lg"
+      maxWidth='lg'
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        margin: { xs: "auto", md: "0.5rem auto" },
-        minHeight: "80vh",
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: { xs: 'auto', md: '0.5rem auto' },
+        minHeight: '80vh',
       }}
     >
       {/* <Box
@@ -80,11 +80,11 @@ const Jobs = () => {
 
       <Box
         sx={{
-          display: "flex",
-          width: "95%",
-          flexDirection: { xs: "column", md: "row" },
-          justifyContent: "space-between",
-          alignItems: "center",
+          display: 'flex',
+          width: '95%',
+          flexDirection: { xs: 'column', md: 'row' },
+          justifyContent: 'space-between',
+          alignItems: 'center',
         }}
       >
         <SearchInput
@@ -95,26 +95,26 @@ const Jobs = () => {
         <Stack
           spacing={0.5}
           sx={{
-            mt: "0.5rem",
-            display: "flex",
-            alignItems: "center",
-            flexDirection: { xs: "column", md: "row" },
-            justifyContent: "flex-ends",
+            mt: '0.5rem',
+            display: 'flex',
+            alignItems: 'center',
+            flexDirection: { xs: 'column', md: 'row' },
+            justifyContent: 'flex-ends',
           }}
         >
           <Autocomplete
-            id="search-type"
+            id='search-type'
             onInputChange={(event, newInputValue) => {
               setFilterType(newInputValue);
               setPage(1);
             }}
-            options={["Full time", "Part time", "Temporary"]}
-            size={"small"}
+            options={['Full time', 'Part time', 'Temporary']}
+            size={'small'}
             style={{ width: 200, marginRight: 25 }}
             renderInput={(params) => (
               <TextField
                 {...params}
-                label="Search by Type"
+                label='Search by Type'
                 InputProps={{
                   ...params.InputProps,
                   style: { height: 40 },
@@ -123,18 +123,18 @@ const Jobs = () => {
             )}
           />
           <Autocomplete
-            id="search-category"
-            size={"small"}
+            id='search-category'
+            size={'small'}
             style={{ width: 200, marginRight: 25 }}
             onInputChange={(event, newInputValue) => {
               setFilterCategory(newInputValue);
               setPage(1);
             }}
-            options={["Community", "Environment", "Healthcare"]}
+            options={['Community', 'Environment', 'Healthcare']}
             renderInput={(params) => (
               <TextField
                 {...params}
-                label="Search by Category"
+                label='Search by Category'
                 InputProps={{
                   ...params.InputProps,
                   style: { height: 40 },
@@ -145,18 +145,18 @@ const Jobs = () => {
 
           {dataLocation && (
             <Autocomplete
-              id="search-location"
+              id='search-location'
               onInputChange={(event, newInputValue) => {
                 setFilterLocation(newInputValue);
                 setPage(1);
               }}
-              size={"small"}
+              size={'small'}
               style={{ width: 200, marginRight: 25 }}
               options={dataLocation.map((location) => location.name)}
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="Search by Location"
+                  label='Search by Location'
                   InputProps={{
                     ...params.InputProps,
                     style: { height: 40 },
@@ -168,30 +168,30 @@ const Jobs = () => {
         </Stack>
       </Box>
       <Typography
-        variant="subtitle"
+        variant='subtitle'
         sx={{
-          color: "text.secondary",
-          m: "1rem 0 0 1.7rem",
-          alignSelf: "start",
+          color: 'text.secondary',
+          m: '1rem 0 0 1.7rem',
+          alignSelf: 'start',
         }}
       >
         {totalJobs > 1
           ? `${totalJobs} jobs found`
           : totalJobs === 1
           ? `${totalJobs} job found`
-          : "No job found"}
+          : 'No job found'}
       </Typography>
-      <Grid container sx={{ margin: "auto" }}>
+      <Grid container sx={{ margin: 'auto' }}>
         {/* <Grid item xs={3}></Grid> */}
 
         {jobIds.map((jobId) => (
-          <Grid item lg={6} xs={12} sx={{ padding: 0, mb: "1rem" }}>
+          <Grid item lg={6} xs={12} sx={{ padding: 0, mb: '1rem' }}>
             <JobItem job={jobs[jobId]} />
           </Grid>
         ))}
       </Grid>
       <Pagination
-        sx={{ m: "1rem  auto" }}
+        sx={{ m: '1rem  auto' }}
         count={totalPages}
         page={page}
         onChange={handleChangePage}
