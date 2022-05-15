@@ -1,7 +1,6 @@
-import FlippedJob from "components/form/FlippedJob";
-import { AuthProvider } from "contexts/AuthContext";
-import ScrollToTop from "routes/ScrollToTop";
-import AppRoutes from "./routes";
+import { AuthProvider } from 'contexts/AuthContext';
+import ScrollToTop from 'routes/ScrollToTop';
+import AppRoutes from './routes';
 
 function App() {
   return (
@@ -9,7 +8,6 @@ function App() {
       <ScrollToTop />
       <AppRoutes />
     </AuthProvider>
-    // <FlippedJob />
   );
 }
 
