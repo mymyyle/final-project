@@ -1,6 +1,6 @@
-import { AuthProvider } from 'contexts/AuthContext';
-import ScrollToTop from 'routes/ScrollToTop';
-import AppRoutes from './routes';
+import { AuthProvider } from "contexts/AuthContext";
+import ScrollToTop from "routes/ScrollToTop";
+import AppRoutes from "./routes";
 
 function App() {
   return (

@@ -26,22 +26,21 @@
       }
     }
 
-    ul {
+    .ul {
       display: flex;
       justify-content: center;
       align-items: center;
 
-      li {
+      .li {
         .btn {
-          color: $dark-color;
-          background: $white;
+          color: inherit;
+          // background: $white;
           padding: 0.75rem;
           border: 1px solid transparent;
-          margin-right: 2px;
+          margin-right: 1px;
 
           &:hover {
             border-bottom: 1px solid $primary-color;
-            color: $dark-color;
           }
         }
 
@@ -66,7 +65,6 @@
     }
     @media only screen and (max-width: 768px) {
       flex-direction: column;
-      row-gap: 1rem;
       padding: 1.2rem;
     }
   }

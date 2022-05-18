@@ -8,12 +8,15 @@ const {
   updateAccount,
   deactivateAccount,
   getUserByAccessToken,
+  countTotalUser,
 } = userController;
 const { loginRequired } = require("../middlewares/authentication");
 
 router.post("/register", register);
 
 router.post("/login", login);
+
+router.get("/count", countTotalUser);
 
 router.get("/me", loginRequired, getUserByAccessToken);
 

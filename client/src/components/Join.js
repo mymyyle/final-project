@@ -37,51 +37,40 @@ const Join = () => {
             fontSize: { sm: "45px", xs: "30px" },
             lineHeight: 1.6,
             fontWeight: "700",
+            textAlign: { xs: "center" },
           }}
         >
           Join your hand with us for <br /> a better life and future
         </Typography>
-        <Box
-          onClick={handleClick}
+
+        <Button
+          variant="contained"
+          size="large"
+          endIcon={<ArrowCircleRightIcon />}
           sx={{
-            width: "13rem",
-            height: "4rem",
-            bgcolor: "#fff",
-            borderRadius: "10px",
-            p: "1rem",
+            bgcolor: "white",
+            color: "black",
+            padding: "1rem 2rem",
+            "&:hover": {
+              bgcolor: "black",
+              color: "white",
+            },
           }}
+          onClick={handleClick}
         >
-          <Box
-            sx={{
-              mb: "0.5rem",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <ArrowCircleRightIcon htmlColor="black" sx={{ fontSize: "35px" }} />
-            <Typography
-              component="span"
-              sx={{
-                ml: "0.5rem",
-                fontWeight: 500,
-                fontSize: "25px",
-                color: "black",
-              }}
-            >
-              Register
-            </Typography>
-          </Box>
-        </Box>
+          Register
+        </Button>
+
         <Typography
           sx={{
-            fontFamily: "Playfair Display",
+            fontFamily: "Reey, sans-serif",
             fontWeight: 200,
-            fontSize: "60px",
+            fontSize: "50px",
             color: "rgba(255,255,255,0.3)",
             position: "absolute",
-            top: "-35px",
+            top: "-30px",
             left: "-10px",
+            textAlign: { xs: "center" },
           }}
         >
           Become a Volunteers

@@ -18,8 +18,7 @@ export const Employer = () => {
         <Card
           sx={{
             padding: "1.75rem",
-            position: { sm: "fixed" },
-            width: { sm: "25%" },
+            width: "100%",
           }}
         >
           <Box

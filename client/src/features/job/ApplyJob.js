@@ -51,9 +51,7 @@ const ApplyJob = () => {
       sx={{
         mt: "1rem",
         p: "1rem 0",
-        position: { sm: "fixed" },
-        top: { md: "390px", sm: "555px" },
-        width: { sm: "25%" },
+        width: "100%",
       }}
     >
       <Container maxWidth="xs">

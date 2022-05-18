@@ -13,6 +13,7 @@ const initialState = {
   allJobs: [],
   totalPages: 1,
   totalJobs: 0,
+  countJobs: 0,
 };
 
 const slice = createSlice({
@@ -71,6 +72,11 @@ const slice = createSlice({
         (job) => job._id !== action.payload._id
       );
     },
+    countAllJobSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      state.countJobs = action.payload.count;
+    },
   },
 });
 
@@ -83,6 +89,9 @@ export const createJob =
     imageUrl,
     detailedInformation,
     category,
+    lat,
+    lng,
+    district,
   }) =>
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
@@ -97,6 +106,9 @@ export const createJob =
         imageUrl: img,
         detailedInformation,
         category,
+        lat,
+        lng,
+        district,
       });
       dispatch(slice.actions.createJobSuccess(response.data));
 
@@ -156,6 +168,15 @@ export const getJob =
       dispatch(slice.actions.hasError(error.message));
     }
   };
+export const countAllJob = () => async (dispatch) => {
+  dispatch(slice.actions.startLoading());
+  try {
+    const response = await apiService.get(`/job/all`);
+    dispatch(slice.actions.countAllJobSuccess(response.data));
+  } catch (error) {
+    dispatch(slice.actions.hasError(error.message));
+  }
+};
 
 export const getJobById = (jobId) => async (dispatch) => {
   dispatch(slice.actions.startLoading());

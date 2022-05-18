@@ -1,4 +1,4 @@
-import { Card, CardMedia, Chip, Stack, Typography } from "@mui/material";
+import { Card, Chip, Stack, Typography } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
 import FmdGoodIcon from "@mui/icons-material/FmdGood";
@@ -9,16 +9,8 @@ import { Box } from "@mui/system";
 
 const DetailsJob = () => {
   const { currentJob } = useSelector((state) => state.job);
-  const {
-    name,
-    type,
-    category,
-    description,
-    location,
-    imageUrl,
-    createdAt,
-    authorId: author,
-  } = currentJob;
+  const { name, type, category, description, location, imageUrl, createdAt } =
+    currentJob;
 
   return (
     <>
@@ -78,7 +70,7 @@ const DetailsJob = () => {
               margin="0.5rem 0"
             />
           )}
-          <Typography variant="h5">Job description</Typography>
+          <Typography variant="h5">Description</Typography>
           <Box
             variant="body1"
             sx={{ textIndent: "50px", textAlign: "justify" }}

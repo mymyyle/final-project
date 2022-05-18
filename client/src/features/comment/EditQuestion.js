@@ -3,7 +3,7 @@ import { FormProvider, FTextField } from "../../components/form";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { Container, Stack, Typography } from "@mui/material";
+import { Card, Container, Stack, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -42,18 +42,26 @@ const EditQuestion = ({ id, setShowEdit }) => {
     <Container
       maxWidth="md"
       sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        margin: "1rem",
+        margin: "1rem 0",
       }}
     >
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-        <Stack spacing={1} sx={{ marginBottom: 2 }}>
+        <Card
+          sx={{
+            marginBottom: 2,
+            display: "flex",
+            justifyContent: "start",
+            p: "1rem",
+            w: "100%",
+            gap: 1,
+          }}
+        >
           <FTextField
             name="content"
             label="Edit Question"
             placeholder="Enter your question"
+            multiline
+            sx={{ width: "22vw" }}
           />
 
           <LoadingButton
@@ -64,7 +72,7 @@ const EditQuestion = ({ id, setShowEdit }) => {
           >
             Update
           </LoadingButton>
-        </Stack>
+        </Card>
       </FormProvider>
     </Container>
   );

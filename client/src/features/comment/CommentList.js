@@ -80,6 +80,7 @@ const CommentList = () => {
       {commentIds?.map((id) => {
         return <Comment key={id} comment={comments[id]} />;
       })}
+
       {totalComments > 0 && (
         <Pagination
           sx={{

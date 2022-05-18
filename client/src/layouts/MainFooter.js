@@ -1,9 +1,15 @@
 import React from "react";
 import "./MainFooter.scss";
 import Logo from "components/Logo";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const MainFooter = () => {
+  const navigate = useNavigate();
+  const handleDonate = () => {
+    navigate("/donation");
+  };
+
   return (
     <Box id="main-footer" sx={{ zIndex: "2" }}>
       <div className="container footer-container">
@@ -54,14 +60,22 @@ const MainFooter = () => {
           </ul>
         </div>
         <div>
-          <h2>Join Our Team</h2>
+          <h2>Donation</h2>
           <p>
             The VolunCheers team believes in the power of volunteerism, and we
             love helping people finding meaningful ways to give back.
           </p>
-          <a href="#" className="btn btn-secondary">
-            Join Now
-          </a>
+          <Button
+            variant="contained"
+            onClick={handleDonate}
+            className="btn btn-secondary"
+            sx={{
+              bgcolor: "#f99500",
+              "&:hover": { color: "black", bgcolor: "#f99500" },
+            }}
+          >
+            Donate now
+          </Button>
         </div>
       </div>
     </Box>

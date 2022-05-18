@@ -113,15 +113,22 @@ const Comment = ({ comment }) => {
                   >
                     {questioner.name}
                   </Typography>
-                  <Typography
-                    sx={{ ml: "1rem", wordBreak: "break-word" }}
-                    variant="body1"
-                  >
-                    {comment.content}
-                  </Typography>
+
+                  <Box id="content-conetnt edit">
+                    <Typography
+                      sx={{ ml: "1rem", wordBreak: "break-word" }}
+                      variant="body1"
+                    >
+                      {comment.content}
+                    </Typography>
+                    {showEdit && !comment.reply && (
+                      <EditQuestion id={id} setShowEdit={setShowEdit} />
+                    )}
+                  </Box>
                 </Box>
+
                 <Box
-                  id="day-edit-delete"
+                  id="day-btn-edit-delete"
                   sx={{
                     display: "flex",
                     alignItems: "center",
@@ -134,7 +141,7 @@ const Comment = ({ comment }) => {
                     {!comment.reply && (
                       <EditIcon
                         fontSize="small"
-                        onClick={() => setShowEdit(true)}
+                        onClick={() => setShowEdit(!showEdit)}
                         sx={[
                           {
                             "&:hover": {
@@ -144,10 +151,6 @@ const Comment = ({ comment }) => {
                           },
                         ]}
                       />
-                    )}
-
-                    {showEdit && (
-                      <EditQuestion id={id} setShowEdit={setShowEdit} />
                     )}
 
                     <DeleteForeverIcon

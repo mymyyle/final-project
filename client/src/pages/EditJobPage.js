@@ -1,9 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as Yup from "yup";
+
 import {
-  Alert,
   Autocomplete,
   Container,
   Stack,
@@ -18,10 +16,11 @@ import {
   FTextField,
   FUploadImage,
 } from "components/form";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { editJob, getJobById } from "features/job/jobSlice";
 import { Box } from "@mui/system";
 import dataLocation from "local.json";
+import PostJobMap from "features/map/PostJobMap";
 
 const EditJobPage = () => {
   const { jobId } = useParams();
@@ -45,14 +44,17 @@ const EditJobPage = () => {
     reset,
     setValue,
     setError,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
   } = methods;
 
   useEffect(() => {
     dispatch(getJobById(jobId));
   }, []);
   const [location, setLocation] = useState();
-
+  const [district, setDistrict] = useState();
+  const [districtOptions, setDistrictOptions] = useState([]);
+  const [address, setAddress] = useState("");
+  const [map, setMap] = useState({});
   useEffect(() => {
     reset({
       name: currentJob.name,
@@ -64,6 +66,14 @@ const EditJobPage = () => {
       status: "ongoing",
     });
     setLocation(currentJob.location);
+    setDistrict(currentJob.district);
+    setDistrictOptions(
+      dataLocation
+        .find((province) => province.name === "Hồ Chí Minh")
+        .districts.map((location) => location.name)
+    );
+    setAddress(district + ", " + location + ", Vietnam");
+    setMap({ lng: currentJob.lng, lat: currentJob.lat });
   }, [currentJob]);
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.job);
@@ -114,28 +124,54 @@ const EditJobPage = () => {
             <FTextField name="name" label="Job Title" />
 
             {dataLocation && (
-              <Autocomplete
-                id="location"
-                onInputChange={(event, newInputValue) => {
-                  setLocation(newInputValue);
-                }}
-                defaultValue={currentJob.location}
-                name="location"
-                size={"small"}
-                style={{ width: 200, marginRight: 25, height: 55 }}
-                options={dataLocation.map((location) => location.name)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Location"
-                    InputProps={{
-                      ...params.InputProps,
-                      style: { height: 55 },
-                    }}
-                  />
-                )}
-              />
+              <>
+                <Autocomplete
+                  id="location"
+                  onInputChange={(event, newInputValue) => {
+                    setLocation(newInputValue);
+                  }}
+                  defaultValue={currentJob.location}
+                  name="location"
+                  size={"small"}
+                  style={{ width: 200, marginRight: 25, height: 55 }}
+                  options={dataLocation.map((location) => location.name)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Location"
+                      InputProps={{
+                        ...params.InputProps,
+                        style: { height: 55 },
+                      }}
+                    />
+                  )}
+                />
+                <Autocomplete
+                  id="location-district"
+                  onInputChange={(event, newInputValue) => {
+                    setDistrict(newInputValue);
+                    setAddress(newInputValue + ", " + location + ", Vietnam");
+                  }}
+                  defaultValue={currentJob.district}
+                  name="district"
+                  size={"small"}
+                  style={{ width: 210, marginRight: 25, height: 55 }}
+                  options={districtOptions}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="District"
+                      InputProps={{
+                        ...params.InputProps,
+                        style: { height: 55 },
+                      }}
+                    />
+                  )}
+                />
+              </>
             )}
+            <PostJobMap address={address} setMap={setMap} map={map} />
+
             <FTextField
               name="description"
               label="Job Description"

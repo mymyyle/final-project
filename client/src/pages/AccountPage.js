@@ -7,35 +7,57 @@ import EditIcon from "@mui/icons-material/Edit";
 import WorkIcon from "@mui/icons-material/Work";
 import PeopleIcon from "@mui/icons-material/People";
 import { Box } from "@mui/system";
-import { TabContext, TabList, TabPanel } from "@mui/lab";
+import { TabContext, TabPanel } from "@mui/lab";
 import { Tab, Tabs } from "@mui/material";
-import { useSelector } from "react-redux";
 import ManageApplication from "features/application/ManageApplication";
+import { useNavigate, useParams } from "react-router-dom";
+
 const TAB = [
   {
     value: "Update profile",
     icon: <EditIcon sx={{ fontSize: 24 }} />,
     component: <UpdateProfile />,
+    slug: "update_profile",
   },
   {
-    value: "Manage Resumes",
+    value: "Opportunities",
     icon: <PeopleIcon sx={{ fontSize: 24 }} />,
     component: <ManageResume />,
+    slug: "Opportunities",
   },
   {
-    value: "Manage Application",
+    value: "Applications",
     icon: <WorkIcon sx={{ fontSize: 24 }} />,
     component: <ManageApplication />,
+    slug: "applications",
   },
 ];
 const AccountPage = () => {
   const { user } = useAuth();
 
   const [value, setValue] = useState(TAB[0].value);
-
+  const navigate = useNavigate();
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    const currentTab = TAB.find(({ value }) => value === newValue);
+    navigate(`/account/${currentTab.slug}`);
   };
+  const { tab } = useParams();
+  useEffect(() => {
+    const currentTab = TAB.find(({ slug }) => slug === tab);
+    setValue(currentTab.value);
+  }, [tab]);
+
+  function LinkTab(props) {
+    return (
+      <Tab
+        component="a"
+        onClick={(event) => {
+          event.preventDefault();
+        }}
+        {...props}
+      />
+    );
+  }
   return (
     <>
       <Box>
@@ -48,23 +70,32 @@ const AccountPage = () => {
             sx={{
               borderBottom: 1,
               borderColor: "divider",
+              display: "flex",
+              justifyContent: "space-between",
             }}
           >
             <Tabs
-              // orientation="vertical"
               onChange={handleChange}
               aria-label="account tab"
               variant="scrollable"
+              // textColor="secondary"
+              // indicatorColor="secondary"
+              // TabIndicatorProps={{
+              //   style: {
+              //     backgroundColor: "#D97D54",
+              //   },
+              // }}
               scrollButtons
               allowScrollButtonsMobile
               sx={{ maxWidth: "700px", m: "auto" }}
             >
               {TAB.map((tab) => (
-                <Tab
+                <LinkTab
                   key={tab.value}
                   label={tab.value}
                   value={tab.value}
                   icon={tab.icon}
+                  href={`account/${tab.slug}`}
                 />
               ))}
             </Tabs>
@@ -82,4 +113,3 @@ const AccountPage = () => {
 };
 
 export default AccountPage;
-// Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita, libero dicta laudantium, nulla distinctio, minima aspernatur eum quam inventore similique soluta ipsum. Impedit repellendus repudiandae minus itaque numquam deserunt praesentium recusandae commodi consequatur corporis quae vero ab, blanditiis dolorum corrupti labore ratione nisi voluptas quis repellat voluptatibus consectetur modi ex!

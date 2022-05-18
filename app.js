@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const indexRouter = require("./routes/index");
 const { sendResponse } = require("./helpers/utils");
+const createUser = require("./CreateUser");
 
 require("dotenv").config();
 const cors = require("cors");
@@ -17,9 +18,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
+
 mongoose
   .connect(mongoURI)
-  .then(() => console.log(`DB connected`))
+  .then(() => {
+    console.log(`DB connected`);
+    // createUser(200);
+  })
   .catch((err) => console.log(err));
 
 app.use("/", indexRouter);

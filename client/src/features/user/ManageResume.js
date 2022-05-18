@@ -1,5 +1,4 @@
 import {
-  Button,
   Card,
   Paper,
   Stack,
@@ -51,11 +50,10 @@ const ManageResume = () => {
   };
   return (
     <div>
-      <Typography variant="h6">Manage resume</Typography>
       <Card sx={{ p: 3 }}>
         <Stack direction={{ xs: "column", md: "row" }} alignItems="center">
           <SearchInput
-            placeholder={`Search by Job's Name`}
+            placeholder={`Search by Opportunity's Name`}
             handleSubmit={handleSubmit}
           />
           <Typography
@@ -63,10 +61,10 @@ const ManageResume = () => {
             sx={{ color: "text.secondary", ml: 1 }}
           >
             {totalJobs > 1
-              ? `${totalJobs} jobs found`
+              ? `${totalJobs} opportunities found`
               : totalJobs === 1
-              ? `${totalJobs} job found`
-              : "No job found"}
+              ? `${totalJobs} opportunity found`
+              : "No opportunity found"}
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
           <TablePagination
@@ -92,8 +90,8 @@ const ManageResume = () => {
                 <TableCell>Job's Name</TableCell>
                 <TableCell align="right">Created At</TableCell>
                 <TableCell align="right">Status</TableCell>
-                <TableCell align="right">Edit Job</TableCell>
-                <TableCell align="right">Delete Job</TableCell>
+                <TableCell align="right">Edit </TableCell>
+                <TableCell align="right">Delete </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

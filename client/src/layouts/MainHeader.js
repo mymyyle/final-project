@@ -1,9 +1,10 @@
-import { Logout, PersonAdd, Settings } from "@mui/icons-material";
 import {
   Avatar,
   Box,
   Button,
   IconButton,
+  List,
+  ListItem,
   Menu,
   MenuItem,
   Typography,
@@ -11,8 +12,7 @@ import {
 } from "@mui/material";
 import Logo from "components/Logo";
 import useAuth from "hooks/useAuth";
-import React, { useContext, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useContext, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { ColorModeContext } from "theme";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
@@ -28,7 +28,7 @@ export const AccountMenu = ({ user, logout }) => {
   };
   const navigate = useNavigate();
   const handleAccount = () => {
-    navigate("/account");
+    navigate("/account/update_profile");
   };
   const handleLogout = () => {
     logout(() => {
@@ -42,7 +42,8 @@ export const AccountMenu = ({ user, logout }) => {
   return (
     <Box>
       <Button
-        id="demo-positioned-button"
+        id="positioned-button"
+        sx={{ p: 0, m: 0 }}
         aria-controls={open ? "demo-positioned-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
@@ -79,13 +80,13 @@ export const AccountMenu = ({ user, logout }) => {
 const NAV_ITEMS = [
   { label: "Home", url: "/", className: "btn" },
   { label: "Jobs", url: "/jobs", className: "btn" },
-  { label: "POST A JOB", url: "/post_job", className: "btn btn-post" },
+  { label: "Post a job", url: "/post_job", className: "btn" },
+  { label: "DONATE", url: "/donation", className: "btn btn-post" },
 ];
-
 const MainHeader = () => {
   const { isAuthenticated, user, logout } = useAuth();
-
   const theme = useTheme();
+
   const colorMode = useContext(ColorModeContext);
   return (
     <Box
@@ -108,10 +109,20 @@ const MainHeader = () => {
           </Typography>
           <span className="red">Cheers</span>
         </Box>
-
-        <ul>
+        <Box sx={{ flex: 1 }} />
+        <List className="ul" sx={{ p: 0, m: 0 }}>
           {NAV_ITEMS.map((item) => (
-            <li key={item.label}>
+            <ListItem
+              className="li"
+              key={item.label}
+              sx={{
+                p: 0,
+                m: 0,
+                height: "3vh",
+                whiteSpace: "nowrap",
+                color: theme.palette.text.header,
+              }}
+            >
               <NavLink
                 to={item.url}
                 className={({ isActive }) =>
@@ -120,9 +131,19 @@ const MainHeader = () => {
               >
                 {item.label}
               </NavLink>
-            </li>
+            </ListItem>
           ))}
-          <li>
+        </List>
+
+        <List
+          className="ul"
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <ListItem className="li" sx={{ p: 0, m: 0 }}>
             {isAuthenticated ? (
               <AccountMenu user={user} logout={logout} />
             ) : (
@@ -130,8 +151,9 @@ const MainHeader = () => {
                 Login
               </NavLink>
             )}
-          </li>
-          <li>
+          </ListItem>
+          {/* THEME */}
+          <ListItem className="li" sx={{ p: 0, m: 0 }}>
             <Box
               sx={{
                 display: "flex",
@@ -140,7 +162,6 @@ const MainHeader = () => {
                 justifyContent: "center",
                 color: "text.primary",
                 borderRadius: 1,
-                p: 0.5,
               }}
             >
               <IconButton
@@ -155,8 +176,8 @@ const MainHeader = () => {
                 )}
               </IconButton>
             </Box>
-          </li>
-        </ul>
+          </ListItem>
+        </List>
       </Box>
     </Box>
   );

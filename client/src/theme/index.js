@@ -7,8 +7,6 @@ import {
 import { createContext, useMemo, useState } from "react";
 import customizeComponents from "./customizations";
 
-import ReeyRegular from "assets/Reey-Regular.otf";
-
 const PRIMARY = {
   lighter: "#C8FACD",
   light: "#5BE584",
@@ -86,23 +84,6 @@ function ThemeProvider({ children }) {
   const themeOptions = (mode) =>
     mode === "light"
       ? {
-          typography: {
-            fontFamily: ['"Helvetica Neue"', "Arial", "sans-serif"].join(","),
-          },
-          components: {
-            MuiCssBaseline: {
-              styleOverrides: `
-              @font-face {
-                font-family: 'Reey';
-                font-style: normal;
-                font-display: swap;
-                font-weight: 400;
-                src: local(Reey-Regular), url(${ReeyRegular}) format('otf');
-                unicodeRange: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF;
-              }
-            `,
-            },
-          },
           palette: {
             primary: PRIMARY,
             secondary: SECONDARY,
@@ -114,6 +95,7 @@ function ThemeProvider({ children }) {
               primary: GREY[800],
               secondary: GREY[600],
               disabled: GREY[500],
+              header: "black",
             },
             background: {
               paper: "#fff",
@@ -142,7 +124,9 @@ function ThemeProvider({ children }) {
             header: "rgb(31,29,25)",
             comment: "#3d3d3d",
             main: "#ff7675",
-
+            text: {
+              header: "white",
+            },
             background: {
               default: "rgba(43, 42, 51)",
             },

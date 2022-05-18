@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   FormProvider,
   FRadioGroup,
@@ -19,9 +19,9 @@ import {
 import { LoadingButton } from "@mui/lab";
 import { createJob } from "./jobSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
-import LocationInput from "components/LocationInput";
+import { useNavigate } from "react-router-dom";
 import dataLocation from "local.json";
+import PostJobMap from "features/map/PostJobMap";
 
 const NewJobSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -40,6 +40,18 @@ const defaultValues = {
 
 const PostJob = () => {
   const [location, setLocation] = useState("Hồ Chí Minh");
+  const [districtOptions, setDistrictOptions] = useState(
+    dataLocation
+      .find((province) => province.name === "Hồ Chí Minh")
+      .districts.map((location) => location.name) || []
+  );
+  const [district, setDistrict] = useState("Quận 1");
+  const [address, setAddress] = useState("Quận 1, Hồ Chí Minh, VietNam");
+  const [map, setMap] = useState({
+    lng: 106.69656141901858,
+    lat: 10.774984162802395,
+  });
+
   const methods = useForm({
     resolver: yupResolver(NewJobSchema),
     defaultValues,
@@ -47,17 +59,20 @@ const PostJob = () => {
 
   const {
     handleSubmit,
-    reset,
+
     setValue,
-    setError,
+
     formState: { errors, isSubmitting },
   } = methods;
 
   const dispatch = useDispatch();
-  const { isLoading, jobIds, jobs } = useSelector((state) => state.job);
+  const { isLoading } = useSelector((state) => state.job);
   const navigate = useNavigate();
+
   const onSubmit = async (data) => {
-    const jobData = await dispatch(createJob({ ...data, location }));
+    const jobData = await dispatch(
+      createJob({ ...data, location, district, lng: map.lng, lat: map.lat })
+    );
     navigate(`/job/${jobData._id}`);
   };
 
@@ -74,6 +89,14 @@ const PostJob = () => {
     [setValue]
   );
 
+  useEffect(() => {
+    let districts = dataLocation.find((province) => province.name === location);
+    if (districts !== undefined) {
+      districts = districts?.districts.map((location) => location.name);
+      setDistrictOptions(districts);
+    }
+  }, [location]);
+
   return (
     <Container
       sx={{
@@ -85,7 +108,7 @@ const PostJob = () => {
     >
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={3} sx={{ marginBottom: 3 }}>
-          <Typography variant="h6"> POST YOUR JOB</Typography>
+          <Typography variant="h6"> POST NEW JOB</Typography>
           {!!errors.responseError && (
             <Alert severity="error">{errors.responseError.message} </Alert>
           )}
@@ -93,28 +116,53 @@ const PostJob = () => {
           <FTextField name="name" label="Job Title" />
 
           {dataLocation && (
-            <Autocomplete
-              id="location"
-              onInputChange={(event, newInputValue) => {
-                setLocation(newInputValue);
-              }}
-              defaultValue="Hồ Chí Minh"
-              name="location"
-              size={"small"}
-              style={{ width: 200, marginRight: 25, height: 55 }}
-              options={dataLocation.map((location) => location.name)}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Location"
-                  InputProps={{
-                    ...params.InputProps,
-                    style: { height: 55 },
-                  }}
-                />
-              )}
-            />
+            <>
+              <Autocomplete
+                id="location"
+                onInputChange={(event, newInputValue) => {
+                  setLocation(newInputValue);
+                }}
+                defaultValue="Hồ Chí Minh"
+                name="location"
+                size={"small"}
+                style={{ width: 210, marginRight: 25, height: 55 }}
+                options={dataLocation.map((location) => location.name)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Location"
+                    InputProps={{
+                      ...params.InputProps,
+                      style: { height: 55 },
+                    }}
+                  />
+                )}
+              />
+              <Autocomplete
+                id="location-district"
+                onInputChange={(event, newInputValue) => {
+                  setDistrict(newInputValue);
+                  setAddress(newInputValue + ", " + location + ", Vietnam");
+                }}
+                defaultValue="Quận 1"
+                name="district"
+                size={"small"}
+                style={{ width: 210, marginRight: 25, height: 55 }}
+                options={districtOptions}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="District"
+                    InputProps={{
+                      ...params.InputProps,
+                      style: { height: 55 },
+                    }}
+                  />
+                )}
+              />
+            </>
           )}
+          <PostJobMap address={address} setMap={setMap} />
 
           <FTextField
             name="description"

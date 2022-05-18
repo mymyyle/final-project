@@ -6,7 +6,16 @@ const Job = require("../models/Job");
 jobController.createJob = catchAsync(async (req, res, next) => {
   const { currentUserId } = req;
   const { imageUrl, detailedInformation } = req.body;
-  const allows = ["name", "type", "category", "description", "location"];
+  const allows = [
+    "name",
+    "type",
+    "category",
+    "description",
+    "location",
+    "lng",
+    "lat",
+    "district",
+  ];
   const newJob = {};
   newJob.authorId = currentUserId;
   allows.forEach((field) => {
@@ -86,7 +95,7 @@ jobController.getSingleJobByJobId = catchAsync(async (req, res, next) => {
 // 7. user can search by city, name, 1 ngày / nhiều ngày, onl/off, Hình thức làm việc ...
 
 jobController.getAllJob = catchAsync(async (req, res, next) => {
-  const { page = 1, limit = 5, ...filter } = req.query;
+  const { page = 1, limit, ...filter } = req.query;
   const filterCondition = [{ isDeleted: false }];
   const allows = [
     "name",

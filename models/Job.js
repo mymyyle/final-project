@@ -22,6 +22,9 @@ const jobSchema = Schema(
     isDeleted: { type: Boolean, default: false },
     isFeatured: { type: String, default: "false" },
     status: { type: String, enum: ["done", "ongoing"], default: "ongoing" },
+    lng: { type: Number },
+    lat: { type: Number },
+    district: { type: String },
   },
   {
     timestamps: true,

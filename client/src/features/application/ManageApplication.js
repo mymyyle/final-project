@@ -52,7 +52,6 @@ const ManageApplication = () => {
   };
   return (
     <div>
-      <Typography variant="h6">Manage Application</Typography>
       <Card sx={{ p: 3 }}>
         <Stack direction={{ xs: "column", md: "row" }} alignItems="center">
           <SearchInput
@@ -90,7 +89,7 @@ const ManageApplication = () => {
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>Job's Name</TableCell>
+                <TableCell>Opportunity's Name</TableCell>
                 <TableCell align="right">Created At</TableCell>
                 <TableCell align="right">Application's Status</TableCell>
                 <TableCell align="right">Action</TableCell>

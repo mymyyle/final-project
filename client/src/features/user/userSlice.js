@@ -8,6 +8,7 @@ const initialState = {
   error: null,
   currentUser: null,
   profileUser: null,
+  totalUsers: 0,
 };
 
 const slice = createSlice({
@@ -35,6 +36,11 @@ const slice = createSlice({
       state.isLoading = false;
       state.error = null;
       state.profileUser = action.payload;
+    },
+    countAllUserSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      state.totalUsers = action.payload.count;
     },
   },
 });
@@ -72,6 +78,15 @@ export const getUserById = (userId) => async (dispatch) => {
   try {
     const response = await apiService.get(`/user/${userId}`);
     dispatch(slice.actions.getUserByIdSuccess(response.data));
+  } catch (error) {
+    dispatch(slice.actions.hasError(error.message));
+  }
+};
+export const countAllUser = (userId) => async (dispatch) => {
+  dispatch(slice.actions.startLoading());
+  try {
+    const response = await apiService.get(`/user/count`);
+    dispatch(slice.actions.countAllUserSuccess(response.data));
   } catch (error) {
     dispatch(slice.actions.hasError(error.message));
   }

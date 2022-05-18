@@ -151,4 +151,15 @@ userController.getUserByAccessToken = catchAsync(async (req, res, next) => {
   );
 });
 
+userController.countTotalUser = catchAsync(async (req, res, next) => {
+  const count = await User.countDocuments({ isDeleted: false });
+  return sendResponse(
+    res,
+    200,
+    true,
+    { count },
+    null,
+    "count total user successful"
+  );
+});
 module.exports = userController;

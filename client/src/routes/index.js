@@ -14,6 +14,7 @@ import AuthRequire from "./AuthRequire";
 import DetailsJobPage from "pages/DetailsJobPage";
 import EditJobPage from "pages/EditJobPage";
 import ApplicationsPage from "pages/ApplicationsPage";
+import Checkout from "features/donation/Checkout";
 
 const AppRoutes = () => {
   return (
@@ -22,7 +23,9 @@ const AppRoutes = () => {
         <Route index element={<HomePage />} />
         <Route path="jobs" element={<Jobs />} />
         <Route path="job/:jobId" element={<DetailsJobPage />} />
+        <Route path="donation" element={<Checkout />} />
       </Route>
+
       <Route
         path="/"
         element={
@@ -33,10 +36,12 @@ const AppRoutes = () => {
       >
         <Route path="post_job" element={<PostJob />} />
         <Route path="account" element={<AccountPage />} />
+        <Route path="account/:tab" element={<AccountPage />} />
         <Route path="user/:userId" element={<UserProfilePage />} />
         <Route path="job/edit/:jobId" element={<EditJobPage />} />
         <Route path="applications/:jobId" element={<ApplicationsPage />} />
       </Route>
+
       <Route path="/" element={<BlankLayout />}>
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />

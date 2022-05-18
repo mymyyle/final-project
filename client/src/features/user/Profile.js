@@ -1,8 +1,6 @@
 import { Avatar, Box, Card, Container, Typography } from "@mui/material";
-import { border } from "@mui/system";
 import React from "react";
 import PersonIcon from "@mui/icons-material/Person";
-import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 
 const Profile = ({ user }) => {
   return (
@@ -19,7 +17,7 @@ const Profile = ({ user }) => {
           <Box
             sx={{
               bgcolor: "#fab1a0",
-              height: "35vh",
+              height: { md: "35vh", xs: "25vh" },
               width: "90%",
               borderRadius: "10px",
               border: "5px solid #fff",
