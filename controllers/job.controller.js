@@ -42,6 +42,9 @@ jobController.editJob = catchAsync(async (req, res, next) => {
     "imageUrl",
     "detailedInformation",
     "status",
+    "lng",
+    "lat",
+    "district",
   ];
   const { id } = req.params;
   // console.log(`====>`, id);

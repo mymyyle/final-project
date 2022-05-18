@@ -77,7 +77,6 @@ const Map = () => {
         panTo={panTo}
         onClick={() => {
           console.log("click on location");
-
           // navigator.geolocation.getCurrentPosition(success, error, options);
           navigator.geolocation.getCurrentPosition(
             (position) => {
@@ -97,7 +96,7 @@ const Map = () => {
         zoom={8}
         center={center}
         options={options}
-        // onClick={onMapClick}
+        onClick={onMapClick}
         onLoad={onMapLoad}
       >
         {markers.map((marker) => (

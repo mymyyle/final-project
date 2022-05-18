@@ -11,7 +11,7 @@ const MainFooter = () => {
   };
 
   return (
-    <Box id="main-footer" sx={{ zIndex: "2" }}>
+    <Box id="main-footer" sx={{ zIndex: "2", mt: "2rem" }}>
       <div className="container footer-container">
         <div>
           <div className="logo">
@@ -22,17 +22,13 @@ const MainFooter = () => {
           <p>
             VolunCheers is a national provider of volunteer recruitment and
             management software through our technology. The easy-to-use system
-            engages, tracks, and manages volunteers in service to their
+            engages, tracks and manages volunteers in service to their
             communities.
           </p>
         </div>
         <div>
           <h3>Email Newsletter</h3>
-          <p>
-            {/* We send weekly to quarterly emails about volunteer management tips
-            and tricks, general events, and more! */}
-            Stay in the loop on the latest news and updates on all things.
-          </p>
+          <p>Stay in the loop on the latest news and updates on all things.</p>
           <form>
             <input type="email" placeholder="Enter Email..." />
             <input

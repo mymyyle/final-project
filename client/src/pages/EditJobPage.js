@@ -20,7 +20,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { editJob, getJobById } from "features/job/jobSlice";
 import { Box } from "@mui/system";
 import dataLocation from "local.json";
-import PostJobMap from "features/map/PostJobMap";
+import EditJobMap from "features/map/EditJobMap";
 
 const EditJobPage = () => {
   const { jobId } = useParams();
@@ -55,6 +55,7 @@ const EditJobPage = () => {
   const [districtOptions, setDistrictOptions] = useState([]);
   const [address, setAddress] = useState("");
   const [map, setMap] = useState({});
+
   useEffect(() => {
     reset({
       name: currentJob.name,
@@ -66,24 +67,42 @@ const EditJobPage = () => {
       status: "ongoing",
     });
     setLocation(currentJob.location);
+
     setDistrict(currentJob.district);
-    setDistrictOptions(
-      dataLocation
-        .find((province) => province.name === "Hồ Chí Minh")
-        .districts.map((location) => location.name)
-    );
+    let districts = dataLocation.find((province) => province.name === location);
+    if (districts !== undefined) {
+      districts = districts?.districts.map((location) => location.name);
+      setDistrictOptions(districts);
+    }
+
     setAddress(district + ", " + location + ", Vietnam");
     setMap({ lng: currentJob.lng, lat: currentJob.lat });
   }, [currentJob]);
+
+  useEffect(() => {
+    let districts = dataLocation.find((province) => province.name === location);
+    if (districts !== undefined) {
+      districts = districts?.districts.map((location) => location.name);
+      setDistrictOptions(districts);
+    }
+  }, [location]);
+
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.job);
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
-    console.log("submit data", data);
-
-    dispatch(editJob(jobId, { ...data, location })).then(() => reset());
-    navigate("/account");
+    console.log("submit district", district);
+    dispatch(
+      editJob(jobId, {
+        ...data,
+        location,
+        district,
+        lng: map.lng,
+        lat: map.lat,
+      })
+    );
+    navigate("/account/Opportunities");
   };
 
   const handleDrop = useCallback(
@@ -170,7 +189,7 @@ const EditJobPage = () => {
                 />
               </>
             )}
-            <PostJobMap address={address} setMap={setMap} map={map} />
+            <EditJobMap address={address} setMap={setMap} map={map} />
 
             <FTextField
               name="description"

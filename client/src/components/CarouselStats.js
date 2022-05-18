@@ -76,7 +76,7 @@ const CarouselStats = ({ text, totalNumber = 0 }) => {
           {text} are Available
         </Typography>
 
-        <Button onClick={handleOpen}>
+        <Button onClick={handleOpen} sx={{ color: "inherit" }}>
           <StackedLineChartOutlinedIcon />
         </Button>
         <Modal

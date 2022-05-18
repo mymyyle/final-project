@@ -10,16 +10,16 @@ import customizeComponents from "./customizations";
 const PRIMARY = {
   lighter: "#C8FACD",
   light: "#5BE584",
-  main: "#00AB55",
-  dark: "#007B55",
+  main: "#ff7675",
+  dark: "#e87272",
   darker: "#005249",
   contrastText: "#FFF",
 };
 const PRIMARY_1 = {
   lighter: "#E3F2FD",
   light: "#90CAF9",
-  main: "#2196F3",
-  dark: "#1E88E5",
+  main: "#ff7675",
+  dark: "#e87272",
   darker: "#1565C0",
   contrastText: "#FFF",
 };

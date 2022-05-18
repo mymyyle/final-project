@@ -1,8 +1,9 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   GoogleMap,
   useLoadScript,
   Marker,
+  MarkerClusterer,
   InfoWindow,
 } from "@react-google-maps/api";
 import { formatRelative } from "date-fns";
@@ -21,12 +22,22 @@ import {
 } from "@reach/combobox";
 
 import IconItem from "assets/focus-location.png";
+import apiService from "app/apiService";
+import { Button, Chip, Stack, Typography } from "@mui/material";
+import FmdGoodIcon from "@mui/icons-material/FmdGood";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import CategoryIcon from "@mui/icons-material/Category";
+import { fToNow } from "utils/formatTime";
+import { Box } from "@mui/system";
+import mapStyles from "./mapStyles";
+import { useNavigate } from "react-router-dom";
 
 const libraries = ["places"]; //tranh rerender nheiu lan
 
 const mapContainerStyle = {
-  width: "80vw",
-  height: "60vh",
+  width: "95vw",
+  height: "70vh",
+  margin: "auto",
 };
 const center = {
   lat: 10.823099,
@@ -34,6 +45,7 @@ const center = {
 };
 
 const options = {
+  styles: mapStyles,
   disableDefaultUI: true,
   zoomControl: true,
 };
@@ -43,30 +55,45 @@ const AllJobMap = () => {
     libraries,
   });
 
-  const [markers, setMarkers] = useState([]);
   const [selected, setSelected] = useState(null);
-
-  const onMapClick = useCallback((e) => {
-    setMarkers((current) => [
-      ...current,
-      {
-        lat: e.latLng.lat(),
-        lng: e.latLng.lng(),
-        time: new Date(),
-      },
-    ]);
-  }, []);
+  const [jobs, setJobs] = useState();
 
   const mapRef = useRef();
   const onMapLoad = useCallback((map) => {
     mapRef.current = map;
   }, []);
-
   const panTo = useCallback(({ lat, lng }) => {
     mapRef.current.panTo({ lat, lng });
     mapRef.current.setZoom(14);
   }, []);
 
+  useEffect(() => {
+    const getMarkerAllJob = async () => {
+      try {
+        const response = await apiService.get(`/job/all`);
+        const data = response.data.jobList;
+        console.log("data", data);
+        setJobs(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getMarkerAllJob();
+  }, []);
+
+  const [renderMarker, setRenderMarker] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(
+      () => (!renderMarker ? setRenderMarker(true) : null),
+      2000
+    );
+    return () => clearTimeout(timer);
+  }, [renderMarker]);
+
+  const navigate = useNavigate();
+  const navigateToDetailPage = (jobId) => {
+    navigate(`/job/${jobId}`);
+  };
   if (loadError) return "error loading maps";
   if (!isLoaded) return "loading maps";
 
@@ -77,7 +104,6 @@ const AllJobMap = () => {
         panTo={panTo}
         onClick={() => {
           console.log("click on location");
-
           // navigator.geolocation.getCurrentPosition(success, error, options);
           navigator.geolocation.getCurrentPosition(
             (position) => {
@@ -97,25 +123,34 @@ const AllJobMap = () => {
         zoom={8}
         center={center}
         options={options}
-        // onClick={onMapClick}
         onLoad={onMapLoad}
       >
-        {markers.map((marker) => (
-          <Marker
-            key={marker.time.toISOString()}
-            position={{ lat: marker.lat, lng: marker.lng }}
-            icon={{
-              url: IconItem,
-              scaledSize: new window.google.maps.Size(30, 30),
-              origin: new window.google.maps.Point(0, 0),
-              anchor: new window.google.maps.Point(15, 15),
-            }}
-            onClick={() => {
-              console.log(marker);
-              setSelected(marker);
-            }}
-          />
-        ))}
+        {renderMarker && (
+          <MarkerClusterer>
+            {(clusterer) =>
+              jobs?.map((marker) => (
+                <Marker
+                  key={marker._id}
+                  position={{ lat: marker.lat, lng: marker.lng }}
+                  clusterer={clusterer}
+                  icon={{
+                    label: {
+                      url: `${marker.authorId.avatarUrl}`,
+                    },
+                    // url: `${marker.authorId.avatarUrl}`,
+                    // path: ,
+                    scaledSize: new window.google.maps.Size(50, 50),
+                    origin: new window.google.maps.Point(0, 0),
+                    anchor: new window.google.maps.Point(25, 25),
+                  }}
+                  onClick={() => {
+                    setSelected(marker);
+                  }}
+                />
+              ))
+            }
+          </MarkerClusterer>
+        )}
 
         {selected ? (
           <InfoWindow
@@ -124,10 +159,39 @@ const AllJobMap = () => {
               setSelected(null);
             }}
           >
-            <div>
-              <h2>Bear spotted</h2>
-              <p>Spotted {formatRelative(selected.time, new Date())}</p>
-            </div>
+            <Stack
+              spacing={1}
+              sx={{
+                color: "black",
+                p: "0.5rem 1rem 1rem 1rem",
+                opacity: 0.75,
+              }}
+            >
+              <Button onClick={() => navigateToDetailPage(selected._id)}>
+                <Typography variant="h6" sx={{ color: "black" }}>
+                  {selected.name}
+                </Typography>
+              </Button>
+              <Typography sx={{ display: "flex", alignItems: "center" }}>
+                <CategoryIcon />
+                {selected.category}
+              </Typography>
+              <Typography sx={{ display: "flex", alignItems: "center" }}>
+                <AccessTimeIcon /> {fToNow(selected.updatedAt)}
+              </Typography>
+              <Chip
+                label={selected.type}
+                sx={{ fontWeight: 600, fontSize: "14px" }}
+                variant="contained"
+                color={
+                  selected.type === "Full time"
+                    ? "success"
+                    : selected.type === "Temporary"
+                    ? "warning"
+                    : "secondary"
+                }
+              />
+            </Stack>
           </InfoWindow>
         ) : null}
       </GoogleMap>

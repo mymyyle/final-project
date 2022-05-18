@@ -128,6 +128,9 @@ export const editJob =
       imageUrl,
       detailedInformation,
       category,
+      district,
+      lng,
+      lat,
       ...data
     }
   ) =>
@@ -139,6 +142,7 @@ export const editJob =
     if (imageUrl instanceof File) {
       img = await cloudinaryUpload(imageUrl);
     } else img = imageUrl;
+    console.log(`slice`, district);
     try {
       const response = await apiService.put(`/job/update/${jobId}`, {
         name,
@@ -149,6 +153,9 @@ export const editJob =
         detailedInformation,
         category,
         status,
+        district,
+        lng,
+        lat,
       });
       dispatch(slice.actions.editJobSuccess(response.data));
     } catch (error) {

@@ -1,10 +1,9 @@
 import { Button, Chip, TableCell } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
 import { useDispatch } from "react-redux";
 import { deleteJob } from "./jobSlice";
-import { Box } from "@mui/system";
 import { useNavigate } from "react-router-dom";
 import { fDateTime } from "utils/formatTime";
 
@@ -22,7 +21,7 @@ export const JobRow = ({ job }) => {
   const handleClickName = (jobId) => {
     navigate(`/applications/${jobId}`);
   };
-  console.log("job.createdAt", job.createdAt);
+
   return (
     <>
       <TableCell>

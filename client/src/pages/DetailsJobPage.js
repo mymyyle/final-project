@@ -38,7 +38,8 @@ const DetailsJobPage = () => {
           <DetailsJob />
         </Grid>
         <Grid item xs={12} sm={4}>
-          <Box
+          <Stack
+            spacing={3}
             sx={{
               position: { sm: "sticky", xs: "static" },
               top: { sm: "10vh" },
@@ -47,7 +48,7 @@ const DetailsJobPage = () => {
             <Employer />
             <ApplyJob />
             <DetailJobMap />
-          </Box>
+          </Stack>
         </Grid>
         <Grid item xs={12} sm={8}>
           <CommentJob />

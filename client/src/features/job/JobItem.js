@@ -23,7 +23,7 @@ const AnimatedBox = animated(Box);
 const JobItem = ({ job }) => {
   const theme = useTheme();
 
-  const [flipped, set] = useState(false);
+  const [flipped, setFlipped] = useState(false);
   const { transform, opacity } = useSpring({
     opacity: flipped ? 1 : 0,
     transform: `perspective(600px) rotateX(${flipped ? 180 : 0}deg)`,
@@ -45,8 +45,8 @@ const JobItem = ({ job }) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "start",
-          minHeight: "200px",
-          width: { xs: "350px", sm: "650px", lg: "550px" },
+          minHeight: { sm: "200px", xs: "300px" },
+          width: { xs: "350px", sm: "650px", lg: "680px" },
           borderRadius: "15px",
           margin: "0 auto",
           cursor: "pointer",
@@ -57,7 +57,7 @@ const JobItem = ({ job }) => {
           },
         },
       ]}
-      onClick={() => set((state) => !state)}
+      onClick={() => setFlipped((flipped) => !flipped)}
     >
       <AnimatedBox
         sx={{
@@ -67,18 +67,24 @@ const JobItem = ({ job }) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "start",
-          p: 2,
+          p: { sm: "2rem 3rem", xs: "1rem 2rem" },
         }}
         style={{ opacity: opacity.to((o) => 1 - o), transform }}
       >
         <Avatar
           alt={job.authorId.name}
           src={job.authorId.avatarUrl}
-          sx={{ width: 90, height: 90, alignSelf: "start", mt: "0.75rem" }}
-        />
-        <Box
           sx={{
-            ml: { md: "1.5rem", xs: "0.5rem" },
+            width: { sm: 130, xs: 100 },
+            height: { sm: 130, xs: 100 },
+            alignSelf: "start",
+            mt: { sm: "0rem", xs: "1.5rem" },
+          }}
+        />
+        <Stack
+          spacing={2}
+          sx={{
+            ml: { md: "2rem", xs: "2rem" },
             display: "flex",
             justifyContent: "space-between",
             flexDirection: "column",
@@ -86,10 +92,10 @@ const JobItem = ({ job }) => {
           }}
         >
           <Typography
-            variant="h6"
+            variant="h5"
             onClick={navigateToJobDetails}
             sx={[
-              { fontWeight: 550 },
+              { fontWeight: 600 },
               {
                 "&:hover": {
                   cursor: "pointer",
@@ -109,21 +115,26 @@ const JobItem = ({ job }) => {
               flexWrap: "wrap",
               gap: "3px",
               alignItems: { sm: "center", xs: "flex-start" },
-              fontSize: "16px",
               color: "#616161",
             }}
           >
-            <Typography sx={{ display: "flex", alignItems: "center" }}>
+            <Typography
+              sx={{ display: "flex", alignItems: "center", fontSize: "18px" }}
+            >
               <FmdGoodIcon /> {job.location}
             </Typography>
 
-            <Typography sx={{ display: "flex", alignItems: "center" }}>
+            <Typography
+              sx={{ display: "flex", alignItems: "center", fontSize: "18px" }}
+            >
               <CategoryIcon />
               {job.category}
             </Typography>
 
-            <Typography sx={{ display: "flex", alignItems: "center" }}>
-              <AccessTimeIcon /> {fToNow(job.createdAt)}
+            <Typography
+              sx={{ display: "flex", alignItems: "center", fontSize: "18px" }}
+            >
+              <AccessTimeIcon /> &nbsp; {fToNow(job.createdAt)}
             </Typography>
           </Stack>
           <Chip
@@ -144,7 +155,7 @@ const JobItem = ({ job }) => {
                 : "secondary"
             }
           />
-        </Box>
+        </Stack>
       </AnimatedBox>
       <AnimatedBox
         style={{
@@ -167,7 +178,7 @@ const JobItem = ({ job }) => {
             Description
           </Typography>
           <Typography variant="body1">
-            {truncate(job.description, { length: 150 })}
+            {truncate(job.description, { length: 220 })}
           </Typography>
         </Box>
 
