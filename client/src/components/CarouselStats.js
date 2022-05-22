@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { Box, Button, Modal, Typography, useTheme } from "@mui/material";
 import { useSpring, animated } from "react-spring";
 import useIntersectionObserver from "../hooks/useIntersectionObserver";
-import StackedLineChartOutlinedIcon from "@mui/icons-material/StackedLineChartOutlined";
+import InsertChartOutlinedOutlinedIcon from "@mui/icons-material/InsertChartOutlinedOutlined";
 import Chart from "./Chart";
 
 const AnimatedTypography = animated(Typography);
@@ -44,7 +44,7 @@ const CarouselStats = ({ text, totalNumber = 0 }) => {
           textAlign: "center",
           p: "1.25rem 0.75rem",
           width: { md: "15vw", sm: "35vw" },
-          height: { md: "25vh", sm: "13.5vh" },
+          height: { md: "26vh", sm: "13.5vh" },
           bgcolor: "white",
           color: theme.palette.main,
           transition: "all 0.5s ease",
@@ -77,7 +77,7 @@ const CarouselStats = ({ text, totalNumber = 0 }) => {
         </Typography>
 
         <Button onClick={handleOpen} sx={{ color: "inherit" }}>
-          <StackedLineChartOutlinedIcon />
+          <InsertChartOutlinedOutlinedIcon />
         </Button>
         <Modal
           open={open}

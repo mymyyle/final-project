@@ -1,7 +1,7 @@
 import React from "react";
 import "./MainFooter.scss";
 import Logo from "components/Logo";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const MainFooter = () => {
@@ -19,12 +19,12 @@ const MainFooter = () => {
             Volun
             <span className="red">Cheers</span>
           </div>
-          <p>
+          <Typography sx={{ textAlign: "justify", width: "90%" }}>
             VolunCheers is a national provider of volunteer recruitment and
             management software through our technology. The easy-to-use system
             engages, tracks and manages volunteers in service to their
             communities.
-          </p>
+          </Typography>
         </div>
         <div>
           <h3>Email Newsletter</h3>
@@ -57,10 +57,11 @@ const MainFooter = () => {
         </div>
         <div>
           <h2>Donation</h2>
-          <p>
+          <Typography sx={{ textAlign: "justify" }}>
             The VolunCheers team believes in the power of volunteerism, and we
             love helping people finding meaningful ways to give back.
-          </p>
+          </Typography>
+
           <Button
             variant="contained"
             onClick={handleDonate}

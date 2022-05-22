@@ -49,7 +49,7 @@ export const Employer = () => {
                 {
                   "&:hover": {
                     cursor: "pointer",
-                    color: "blue",
+                    color: "#ff7675",
                   },
                 },
               ]}

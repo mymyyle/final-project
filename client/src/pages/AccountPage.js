@@ -10,7 +10,7 @@ import { Box } from "@mui/system";
 import { TabContext, TabPanel } from "@mui/lab";
 import { Tab, Tabs } from "@mui/material";
 import ManageApplication from "features/application/ManageApplication";
-import { useNavigate, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 
 const TAB = [
   {
@@ -23,7 +23,7 @@ const TAB = [
     value: "Opportunities",
     icon: <PeopleIcon sx={{ fontSize: 24 }} />,
     component: <ManageResume />,
-    slug: "Opportunities",
+    slug: "opportunities",
   },
   {
     value: "Applications",
@@ -78,13 +78,7 @@ const AccountPage = () => {
               onChange={handleChange}
               aria-label="account tab"
               variant="scrollable"
-              // textColor="secondary"
-              // indicatorColor="secondary"
-              // TabIndicatorProps={{
-              //   style: {
-              //     backgroundColor: "#D97D54",
-              //   },
-              // }}
+              value={value}
               scrollButtons
               allowScrollButtonsMobile
               sx={{ maxWidth: "700px", m: "auto" }}

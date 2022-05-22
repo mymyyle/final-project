@@ -5,6 +5,8 @@ const logger = require("morgan");
 const indexRouter = require("./routes/index");
 const { sendResponse } = require("./helpers/utils");
 const createUser = require("./CreateUser");
+const createJob = require("./CreateJob");
+const createApplication = require("./createApplication");
 
 require("dotenv").config();
 const cors = require("cors");
@@ -24,6 +26,8 @@ mongoose
   .then(() => {
     console.log(`DB connected`);
     // createUser(200);
+    // createJob(1);
+    // createApplication(5);
   })
   .catch((err) => console.log(err));
 

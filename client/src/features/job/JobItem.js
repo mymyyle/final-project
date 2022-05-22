@@ -20,7 +20,14 @@ import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 
 const AnimatedBox = animated(Box);
 
-const JobItem = ({ job }) => {
+const IconText = ({ icon, text }) => (
+  <Stack direction="row" alignItems="center" gap={1}>
+    {icon}
+    <Typography>{text}</Typography>
+  </Stack>
+);
+
+const JobItem = ({ job, panTo }) => {
   const theme = useTheme();
 
   const [flipped, setFlipped] = useState(false);
@@ -46,7 +53,7 @@ const JobItem = ({ job }) => {
           alignItems: "center",
           justifyContent: "start",
           minHeight: { sm: "200px", xs: "300px" },
-          width: { xs: "350px", sm: "650px", lg: "680px" },
+          width: { xs: "350px", sm: "650px", lg: "650px" },
           borderRadius: "15px",
           margin: "0 auto",
           cursor: "pointer",
@@ -57,7 +64,10 @@ const JobItem = ({ job }) => {
           },
         },
       ]}
-      onClick={() => setFlipped((flipped) => !flipped)}
+      onClick={() => {
+        if (job.lng && job.lat) panTo({ lng: job.lng, lat: job.lat });
+        setFlipped((flipped) => !flipped);
+      }}
     >
       <AnimatedBox
         sx={{
@@ -75,8 +85,8 @@ const JobItem = ({ job }) => {
           alt={job.authorId.name}
           src={job.authorId.avatarUrl}
           sx={{
-            width: { sm: 130, xs: 100 },
-            height: { sm: 130, xs: 100 },
+            width: { sm: 130, xs: 80 },
+            height: { sm: 130, xs: 80 },
             alignSelf: "start",
             mt: { sm: "0rem", xs: "1.5rem" },
           }}
@@ -108,34 +118,26 @@ const JobItem = ({ job }) => {
 
           <Stack
             spacing={1}
-            direction={{ sm: "row", xs: "column" }}
+            // direction={{ sm: "row", xs: "column" }}
+            direction={{ xs: "column" }}
             sx={{
               m: "0.5rem 0 1rem 0",
               display: "flex",
               flexWrap: "wrap",
               gap: "3px",
-              alignItems: { sm: "center", xs: "flex-start" },
+              // alignItems: { sm: "center", xs: "flex-start" },
+              alignItems: { xs: "flex-start" },
               color: "#616161",
             }}
           >
-            <Typography
-              sx={{ display: "flex", alignItems: "center", fontSize: "18px" }}
+            <Stack
+              spacing={{ sm: 9, xs: 1 }}
+              direction={{ sm: "row", xs: "column" }}
             >
-              <FmdGoodIcon /> {job.location}
-            </Typography>
-
-            <Typography
-              sx={{ display: "flex", alignItems: "center", fontSize: "18px" }}
-            >
-              <CategoryIcon />
-              {job.category}
-            </Typography>
-
-            <Typography
-              sx={{ display: "flex", alignItems: "center", fontSize: "18px" }}
-            >
-              <AccessTimeIcon /> &nbsp; {fToNow(job.createdAt)}
-            </Typography>
+              <IconText icon={<FmdGoodIcon />} text={job.location} />
+              <IconText icon={<CategoryIcon />} text={job.category} />
+            </Stack>
+            <IconText icon={<AccessTimeIcon />} text={fToNow(job.createdAt)} />
           </Stack>
           <Chip
             label={type}

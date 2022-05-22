@@ -3,7 +3,7 @@ import { TextField } from "@mui/material";
 
 function FTextField({ name, ...other }) {
   const { control } = useFormContext();
-
+  console.log("other", other);
   return (
     <Controller
       name={name}
@@ -12,6 +12,7 @@ function FTextField({ name, ...other }) {
         <TextField
           {...field}
           fullWidth
+          defaultValue="a"
           error={!!error}
           helperText={error?.message}
           {...other}

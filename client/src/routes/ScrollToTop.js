@@ -9,7 +9,12 @@ export default function ScrollToTop({ children }) {
     if (canControlScrollRestoration) {
       window.history.scrollRestoration = "manual";
     }
-    window.scrollTo(0, 0);
+    if (
+      pathname !== "/account/opportunities" &&
+      pathname !== "/account/update_profile" &&
+      pathname !== "/account/applications"
+    )
+      window.scrollTo(0, 0);
   }, [pathname]);
 
   return children;

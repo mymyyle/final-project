@@ -7,6 +7,8 @@ import { deleteJob } from "./jobSlice";
 import { useNavigate } from "react-router-dom";
 import { fDateTime } from "utils/formatTime";
 
+import ArrowRightAltOutlinedIcon from "@mui/icons-material/ArrowRightAltOutlined";
+
 export const JobRow = ({ job }) => {
   const navigate = useNavigate();
 
@@ -18,21 +20,26 @@ export const JobRow = ({ job }) => {
   const handleEditJob = (jobId) => {
     navigate(`/job/edit/${jobId}`);
   };
-  const handleClickName = (jobId) => {
-    navigate(`/applications/${jobId}`);
+  const navigateToListApplicationOfJob = (jobId) => {
+    navigate(`/applications/${jobId}`, { state: { jobName: job.name } });
+  };
+  const navigateToDetailJobPage = (jobId) => {
+    navigate(`job/${jobId}`);
   };
 
   return (
     <>
       <TableCell>
-        <Button onClick={() => handleClickName(job._id)}>{job.name} </Button>
+        <Button onClick={() => navigateToListApplicationOfJob(job._id)}>
+          {job.name}
+        </Button>
       </TableCell>
       <TableCell align="right">{fDateTime(job.createdAt)}</TableCell>
       <TableCell align="right">
         {job.status === "ongoing" ? (
           <Chip label="Ongoing" color="success" />
         ) : (
-          <Chip label="Freezing Hiring" color="error" />
+          <Chip label="Closed" color="error" />
         )}
       </TableCell>
       <TableCell align="right">
@@ -45,6 +52,11 @@ export const JobRow = ({ job }) => {
           <DeleteIcon />
         </Button>
       </TableCell>
+      {/* <TableCell align="right">
+        <Button onClick={() => navigateToDetailJobPage(job._id)}>
+          <ArrowRightAltOutlinedIcon />
+        </Button>
+      </TableCell> */}
     </>
   );
 };

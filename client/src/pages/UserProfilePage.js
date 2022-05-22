@@ -12,12 +12,7 @@ const UserProfilePage = () => {
     dispatch(getUserById(userId));
   }, [userId]);
 
-  return (
-    <div>
-      UserProfilePage
-      {profileUser && <Profile user={profileUser} />}
-    </div>
-  );
+  return <div>{profileUser && <Profile user={profileUser} />}</div>;
 };
 
 export default UserProfilePage;

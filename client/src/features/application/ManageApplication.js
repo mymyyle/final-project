@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import SearchInput from "components/SearchInput";
-import { getOwnApplication } from "features/application/applicationSlice";
+import { getAllOwnApplication } from "features/application/applicationSlice";
 import OwnApplicationRow from "features/application/OwnApplicationRow";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,7 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 const ManageApplication = () => {
   const [filterName, setFilterName] = useState("");
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(2);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const dispatch = useDispatch();
   const { applicationList, totalApplications } = useSelector(
@@ -30,7 +30,7 @@ const ManageApplication = () => {
 
   useEffect(() => {
     dispatch(
-      getOwnApplication({
+      getAllOwnApplication({
         status: filterName,
         page: page + 1,
         limit: rowsPerPage,
@@ -55,7 +55,8 @@ const ManageApplication = () => {
       <Card sx={{ p: 3 }}>
         <Stack direction={{ xs: "column", md: "row" }} alignItems="center">
           <SearchInput
-            placeholder={"Search by Status: approved, rejected or pending"}
+            label={"Search by Status"}
+            placeholder={"approved, rejected or pending"}
             handleSubmit={handleSubmit}
           />
           <Typography

@@ -98,33 +98,62 @@ const Carousel = () => {
           {images.map((step, index) => (
             <div key={step.label}>
               {Math.abs(activeStep - index) <= 2 ? (
-                <Box
-                  component="img"
-                  sx={[
-                    {
-                      display: "block",
-                      width: "100vw",
-                      height: { md: "125vh", sm: "45vh", xs: "28vh" },
-                      objectFit: "contain",
-                      transform: "scale(1.2)",
-                      overflow: "hidden",
-                      transitionDuration: "4s",
-                      // backgroundImage: {
-                      //   md: `linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.5)), url(${step.imgPath})  `,
-                      // },
-                      // backgroundRepeat: "no-repeat",
-                      // backgroundAttachment: "fixed",
-                    },
-                    {
-                      "&:hover": {
-                        transform: "scale(1.3)",
+                <>
+                  <Box
+                    component="img"
+                    sx={[
+                      {
+                        display: { xs: "block", md: "none" },
+                        width: "100vw",
+                        height: { md: "125vh", sm: "45vh", xs: "28vh" },
+                        objectFit: "contain",
+                        transform: "scale(1.2)",
+                        overflow: "hidden",
                         transitionDuration: "4s",
+                        // backgroundImage: {
+                        //   xs: `linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.5)), url(${step.imgPath})  `,
+                        // },
+                        // backgroundRepeat: "no-repeat",
+                        // backgroundAttachment: "fixed",
                       },
-                    },
-                  ]}
-                  src={step.imgPath}
-                  alt={step.label}
-                />
+                      {
+                        "&:hover": {
+                          transform: "scale(1.3)",
+                          transitionDuration: "4s",
+                        },
+                      },
+                    ]}
+                    src={step.imgPath}
+                    alt={step.label}
+                  />
+                  <Box
+                    component="img"
+                    sx={[
+                      {
+                        display: { xs: "none", md: "block" },
+                        width: "100vw",
+                        height: { md: "125vh", sm: "45vh", xs: "28vh" },
+                        objectFit: "contain",
+                        transform: "scale(1.2)",
+                        overflow: "hidden",
+                        transitionDuration: "4s",
+                        backgroundImage: {
+                          md: `linear-gradient(rgba(0, 0, 0, 0.37),rgba(0, 0, 0, 0.5)), url(${step.imgPath})  `,
+                        },
+                        // backgroundRepeat: "no-repeat",
+                        // backgroundAttachment: "fixed",
+                      },
+                      {
+                        "&:hover": {
+                          transform: "scale(1.3)",
+                          transitionDuration: "4s",
+                        },
+                      },
+                    ]}
+                    // src={step.imgPath}
+                    alt={step.label}
+                  />
+                </>
               ) : null}
             </div>
           ))}
@@ -135,10 +164,11 @@ const Carousel = () => {
             // bottom: "0",
             // left: "10%",
             // transform: "translate(-50%, 0)",
-            right: 0,
-            top: "20vh",
+            left: 0,
+            top: "15vh",
             width: "10%",
             background: "transparent",
+            zIndex: 10,
           }}
           steps={maxSteps}
           activeStep={activeStep}

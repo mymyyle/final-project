@@ -25,8 +25,13 @@ const slice = createSlice({
     applyJobSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
-      state.currentApplication = action.payload;
-      // state.currentApplication = { ...action.payload };
+      state.currentApplication = { ...action.payload };
+    },
+    getApplicationOfUserSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      state.currentApplication = { ...action.payload };
+      console.log(" state.currentApplication", action.payload);
     },
     cancelJobSuccess(state, action) {
       state.isLoading = false;
@@ -48,12 +53,15 @@ const slice = createSlice({
       state.applicationList = [...state.applicationList];
       state.applicationList[found].status = action.payload.status;
     },
-    getApplicationsByJobIdSuccess(state, action) {
+    getAllApplicationsByJobIdSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
-      state.applicationList = action.payload.applicationList;
+      const { applicationList, count, totalPage } = action.payload;
+      state.applicationList = [...applicationList];
+      state.totalApplications = count;
+      state.totalPages = totalPage;
     },
-    getOwnApplicationSuccess(state, action) {
+    getAllOwnApplicationSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
       const { applicationList, count, totalPage } = action.payload;
@@ -103,16 +111,21 @@ export const respondRequest =
     }
   };
 
-export const getApplicationsByJobId = (jobId) => async (dispatch) => {
-  dispatch(slice.actions.startLoading());
-  try {
-    const response = await apiService.get(`/application/${jobId}`);
-    dispatch(slice.actions.getApplicationsByJobIdSuccess(response.data));
-  } catch (error) {
-    dispatch(slice.actions.hasError(error.message));
-  }
-};
-export const getOwnApplication =
+export const getAllApplicationsByJobId =
+  (jobId, { status, page = 1, limit = 5 }) =>
+  async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    const query = { page, limit, status };
+    try {
+      const response = await apiService.get(
+        `/application/${jobId}?${stringify(query)}`
+      );
+      dispatch(slice.actions.getAllApplicationsByJobIdSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+    }
+  };
+export const getAllOwnApplication =
   ({ status, page = 1, limit = 5 }) =>
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
@@ -121,9 +134,21 @@ export const getOwnApplication =
       const response = await apiService.get(
         `/application/me?${stringify(query)}`
       );
-      dispatch(slice.actions.getOwnApplicationSuccess(response.data));
+      dispatch(slice.actions.getAllOwnApplicationSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
     }
   };
+
+export const getApplicationOfUser = (jobId) => async (dispatch) => {
+  dispatch(slice.actions.startLoading());
+  try {
+    const response = await apiService.get(`/application/me/${jobId}`);
+    console.log(`response`, response);
+    dispatch(slice.actions.getApplicationOfUserSuccess(response.data));
+  } catch (error) {
+    dispatch(slice.actions.hasError(error.message));
+  }
+};
+
 export default slice.reducer;

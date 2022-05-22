@@ -38,8 +38,6 @@ const Comment = ({ comment }) => {
         <Card
           sx={{
             p: "0.75rem",
-            // borderBottom: "dotted 2px #b2bec3",
-            // color: "black",
             borderRadius: "5px",
             pl: "2rem",
           }}
@@ -105,7 +103,7 @@ const Comment = ({ comment }) => {
                       {
                         "&:hover": {
                           cursor: "pointer",
-                          color: "blue",
+                          color: "#ff7675",
                         },
                       },
                     ]}
@@ -114,7 +112,7 @@ const Comment = ({ comment }) => {
                     {questioner.name}
                   </Typography>
 
-                  <Box id="content-conetnt edit">
+                  <Box id="content-content edit">
                     <Typography
                       sx={{ ml: "1rem", wordBreak: "break-word" }}
                       variant="body1"
@@ -122,7 +120,11 @@ const Comment = ({ comment }) => {
                       {comment.content}
                     </Typography>
                     {showEdit && !comment.reply && (
-                      <EditQuestion id={id} setShowEdit={setShowEdit} />
+                      <EditQuestion
+                        id={id}
+                        setShowEdit={setShowEdit}
+                        content={comment.content}
+                      />
                     )}
                   </Box>
                 </Box>
@@ -137,11 +139,26 @@ const Comment = ({ comment }) => {
                   <Typography sx={{ fontSize: 12 }}>
                     {fDay(comment.createdAt)}
                   </Typography>
-                  <Box>
-                    {!comment.reply && (
-                      <EditIcon
+                  {isAuthenticated && (
+                    <Box>
+                      {!comment.reply && (
+                        <EditIcon
+                          fontSize="small"
+                          onClick={() => setShowEdit(!showEdit)}
+                          sx={[
+                            {
+                              "&:hover": {
+                                cursor: "pointer",
+                                color: "#0652DD",
+                              },
+                            },
+                          ]}
+                        />
+                      )}
+
+                      <DeleteForeverIcon
+                        onClick={() => handleDeleteComment(id)}
                         fontSize="small"
-                        onClick={() => setShowEdit(!showEdit)}
                         sx={[
                           {
                             "&:hover": {
@@ -151,21 +168,8 @@ const Comment = ({ comment }) => {
                           },
                         ]}
                       />
-                    )}
-
-                    <DeleteForeverIcon
-                      onClick={() => handleDeleteComment(id)}
-                      fontSize="small"
-                      sx={[
-                        {
-                          "&:hover": {
-                            cursor: "pointer",
-                            color: "#0652DD",
-                          },
-                        },
-                      ]}
-                    />
-                  </Box>
+                    </Box>
+                  )}
                 </Box>
               </Box>
             </Box>
@@ -200,8 +204,7 @@ const Comment = ({ comment }) => {
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "flex-start",
-                  // bgcolor: "rgb(240, 242, 245)",
-                  // bgcolor: "#3d3d3d",
+
                   bgcolor: theme.palette.comment,
                   minWidth: "36.5vw",
                   borderRadius: "10px",
@@ -225,13 +228,13 @@ const Comment = ({ comment }) => {
                       {
                         "&:hover": {
                           cursor: "pointer",
-                          color: "blue",
+                          color: "#ff7675",
                         },
                       },
                     ]}
                     variant="body1"
                   >
-                    {questioner.name}
+                    {authorJob.name}
                   </Typography>
                   <Typography
                     sx={{ ml: "1rem", wordBreak: "break-word" }}
@@ -246,7 +249,7 @@ const Comment = ({ comment }) => {
               </Box>
             </Box>
           ) : (
-            <CommentReply id={id} />
+            isAuthenticated && <CommentReply id={id} />
           )}
         </Card>
       )}

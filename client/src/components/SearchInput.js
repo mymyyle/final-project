@@ -2,7 +2,7 @@ import { IconButton, InputAdornment, TextField } from "@mui/material";
 import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 
-const SearchInput = ({ placeholder, handleSubmit }) => {
+const SearchInput = ({ label, placeholder, handleSubmit }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const onSubmit = (e) => {
@@ -12,6 +12,7 @@ const SearchInput = ({ placeholder, handleSubmit }) => {
   return (
     <form onSubmit={onSubmit}>
       <TextField
+        label={label}
         value={searchQuery}
         placeholder={placeholder}
         onChange={(event) => setSearchQuery(event.target.value)}

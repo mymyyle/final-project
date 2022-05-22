@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 import { useSelector } from "react-redux";
+import mapStyles from "./mapStyles";
 
-const libraries = ["places"]; //tranh rerender nhieu lan
+const libraries = ["places"];
 
 const mapContainerStyle = {
   width: "22vw",
@@ -10,6 +11,7 @@ const mapContainerStyle = {
 };
 
 const options = {
+  styles: mapStyles,
   disableDefaultUI: true,
   zoomControl: true,
 };

@@ -93,13 +93,13 @@ const MainHeader = () => {
       id="nav"
       sx={{
         position: "fixed",
-        zIndex: 10,
+        zIndex: 100,
         width: "100vw",
         backgroundColor: theme.palette.header,
       }}
     >
       <Box className="container">
-        <Box className="logo">
+        <Box className="logo" sx={{ m: "0.5rem", mb: "1rem" }}>
           <Logo sx={{ height: "2.5rem" }} />
           <Typography
             component="span"
@@ -141,6 +141,7 @@ const MainHeader = () => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            mt: "1rem",
           }}
         >
           <ListItem className="li" sx={{ p: 0, m: 0 }}>

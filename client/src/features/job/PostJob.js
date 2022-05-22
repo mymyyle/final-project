@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import dataLocation from "local.json";
 import PostJobMap from "features/map/PostJobMap";
+import { Box } from "@mui/system";
 
 const NewJobSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -162,6 +163,7 @@ const PostJob = () => {
               />
             </>
           )}
+
           <PostJobMap address={address} setMap={setMap} />
 
           <FTextField

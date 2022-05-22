@@ -117,6 +117,7 @@ export const createJob =
       dispatch(slice.actions.hasError(error.message));
     }
   };
+
 export const editJob =
   (
     jobId,

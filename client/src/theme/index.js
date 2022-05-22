@@ -84,6 +84,9 @@ function ThemeProvider({ children }) {
   const themeOptions = (mode) =>
     mode === "light"
       ? {
+          typography: {
+            fontFamily: ["Be Vietnam Pro", "Arial", "sans-serif"].join(","),
+          },
           palette: {
             primary: PRIMARY,
             secondary: SECONDARY,

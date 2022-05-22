@@ -1,7 +1,6 @@
 import { ThemeContext } from "@emotion/react";
 import { Avatar, Box, Button, Card, Divider, Typography } from "@mui/material";
 import { useTheme } from "@mui/system";
-// import PaypalCheckoutButton from "./PaypalCheckoutButton";
 import Icon from "assets/icon1.png";
 const Checkout = () => {
   const theme = useTheme();

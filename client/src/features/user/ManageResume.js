@@ -53,7 +53,8 @@ const ManageResume = () => {
       <Card sx={{ p: 3 }}>
         <Stack direction={{ xs: "column", md: "row" }} alignItems="center">
           <SearchInput
-            placeholder={`Search by Opportunity's Name`}
+            label="Search by Job's Name"
+            placeholder={`Search by Job's Name`}
             handleSubmit={handleSubmit}
           />
           <Typography
@@ -90,6 +91,7 @@ const ManageResume = () => {
                 <TableCell>Job's Name</TableCell>
                 <TableCell align="right">Created At</TableCell>
                 <TableCell align="right">Status</TableCell>
+                {/* <TableCell align="right">Detailed Page</TableCell> */}
                 <TableCell align="right">Edit Job </TableCell>
                 <TableCell align="right">Delete Job</TableCell>
               </TableRow>

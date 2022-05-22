@@ -3,7 +3,7 @@
 #main-footer {
   background: $dark-color;
   color: $white;
-  padding: 2rem 0;
+  padding: 2rem 1rem;
   .logo {
     display: flex;
     justify-content: start;
@@ -27,7 +27,7 @@
   .footer-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-gap: 3rem;
+    grid-gap: 2rem;
 
     input[type="email"] {
       width: 90%;

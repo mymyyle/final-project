@@ -8,15 +8,15 @@ import {
   CardHeader,
   Typography,
   useTheme,
-} from '@mui/material';
-import React, { useState } from 'react';
-import { useSpring, animated } from 'react-spring';
-import { fDay, fTime, fDate } from 'utils/formatTime';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import { useNavigate } from 'react-router-dom';
-import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
+} from "@mui/material";
+import React, { useState } from "react";
+import { useSpring, animated } from "react-spring";
+import { fDay, fTime, fDate } from "utils/formatTime";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import { useNavigate } from "react-router-dom";
+import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 
-import { truncate } from 'lodash';
+import { truncate } from "lodash";
 
 const AnimatedBox = animated(Box);
 
@@ -46,12 +46,12 @@ const FlipJobCard = ({ job }) => {
           {
             height: 400,
             maxWidth: 370,
-            position: 'relative',
-            cursor: 'pointer',
+            position: "relative",
+            cursor: "pointer",
           },
           {
-            '&:hover': {
-              boxShadow: 'rgba(0, 0, 0, 0.70) 0px 5px 15px',
+            "&:hover": {
+              boxShadow: "rgba(0, 0, 0, 0.70) 0px 5px 15px",
             },
           },
         ]}
@@ -59,79 +59,78 @@ const FlipJobCard = ({ job }) => {
       >
         <AnimatedBox
           sx={{
-            height: '100%',
-            width: '100%',
-            position: 'absolute',
+            height: "100%",
+            width: "100%",
+            position: "absolute",
           }}
           style={{ opacity: opacity.to((o) => 1 - o), transform }}
         >
           <Box
-            component='img'
+            component="img"
             src={job.imageUrl}
-            alt='job img'
-            sx={[{ height: '100%', width: '100%', objectFit: 'cover' }]}
+            alt="job img"
+            sx={[{ height: "100%", width: "100%", objectFit: "cover" }]}
           />
           <Box
             sx={{
-              textAlign: 'center',
+              textAlign: "center",
               height: 73,
               width: 70,
-              backgroundColor: '#ff7675',
-              position: 'absolute',
+              backgroundColor: "#ff7675",
+              position: "absolute",
               top: 0,
-              left: '10%',
+              left: "10%",
               zIndex: 2,
               fontWeight: 700,
-              color: 'white',
+              color: "white",
               fontSize: 22,
-              borderRadius: '0 0 10px 10px',
+              borderRadius: "0 0 10px 10px",
             }}
           >
             {fDay(job.createdAt)}
           </Box>
           <Box
             sx={{
-              position: 'absolute',
+              position: "absolute",
               bottom: 0,
               left: 0,
               zIndex: 2,
               fontWeight: 700,
-              color: 'white',
+              color: "white",
               backgroundImage:
-                'linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0,1))',
-              height: '50%',
-              width: '100%',
+                "linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0,1))",
+              height: "50%",
+              width: "100%",
             }}
           >
             <Box
               sx={{
-                width: '65%',
-                position: 'absolute',
-                bottom: '10%',
-                left: '10%',
+                width: "65%",
+                position: "absolute",
+                bottom: "10%",
+                left: "10%",
               }}
             >
               <Typography
-                variant='b2'
+                variant="b2"
                 sx={{
-                  display: 'flex',
-                  alignItems: 'center',
+                  display: "flex",
+                  alignItems: "center",
                 }}
               >
-                <AccessTimeIcon /> {`${' '}`} {fTime(job.createdAt)}
+                <AccessTimeIcon /> {`${" "}`} {fTime(job.createdAt)}
               </Typography>
               <Button
                 onClick={navigateToJobDetails}
-                variant='h5'
+                variant="h5"
                 sx={{
                   zIndex: 99,
                   fontWeight: 700,
                   fontSize: 24,
-                  textTransform: 'none',
-                  textAlign: 'left',
+                  textTransform: "none",
+                  textAlign: "left",
                   m: 0,
                   p: 0,
-                  fontFamily: 'Lato, sans-serif',
                 }}
               >
                 {job.name}
@@ -144,15 +143,15 @@ const FlipJobCard = ({ job }) => {
           style={{
             opacity,
             transform,
-            rotateX: '180deg',
+            rotateX: "180deg",
           }}
           sx={{
-            width: '100%',
-            height: '100%',
-            position: 'absolute',
+            width: "100%",
+            height: "100%",
+            position: "absolute",
             bgcolor: theme.palette.main,
-            display: 'flex',
-            flexDirection: 'column',
+            display: "flex",
+            flexDirection: "column",
           }}
         >
           <CardHeader
@@ -168,28 +167,28 @@ const FlipJobCard = ({ job }) => {
             title={job.name}
             subheader={fDate(job.createdAt)}
           />
-          <CardContent sx={{ textAlign: 'center', flex: 1 }}>
-            <Typography variant='h5' sx={{ mb: 2, fontWeight: 600 }}>
+          <CardContent sx={{ textAlign: "center", flex: 1 }}>
+            <Typography variant="h5" sx={{ mb: 2, fontWeight: 600 }}>
               Description
             </Typography>
-            <Typography variant='body1'>
-              {truncate(job.description, { length: 200 })}
+            <Typography variant="body1">
+              {truncate(job.description, { length: 160 })}
             </Typography>
           </CardContent>
           <CardActions
             disableSpacing
-            sx={{ justifyContent: 'center', padding: 2 }}
+            sx={{ justifyContent: "center", padding: 2 }}
           >
             <Button
-              variant='contained'
-              size='large'
+              variant="contained"
+              size="large"
               endIcon={<ArrowCircleRightIcon />}
               sx={{
-                bgcolor: 'white',
-                color: 'black',
-                '&:hover': {
-                  bgcolor: 'black',
-                  color: 'white',
+                bgcolor: "white",
+                color: "black",
+                "&:hover": {
+                  bgcolor: "black",
+                  color: "white",
                 },
               }}
               onClick={navigateToJobDetails}

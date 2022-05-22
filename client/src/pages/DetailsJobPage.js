@@ -1,5 +1,4 @@
 import { Container, Grid, Stack } from "@mui/material";
-import { Box } from "@mui/system";
 import LoadingScreen from "components/LoadingScreen";
 import ApplyJob from "features/job/ApplyJob";
 import CommentJob from "features/job/CommentJob";

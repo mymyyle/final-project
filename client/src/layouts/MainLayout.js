@@ -8,7 +8,7 @@ const MainLayout = () => {
   return (
     <Stack sx={{ minHeight: "100vh" }}>
       <MainHeader />
-      <Box sx={{ m: { md: "5.5rem 0 1rem 0", xs: "10rem 0 1rem 0" } }}>
+      <Box sx={{ m: { md: "6.5rem 0 1rem 0", xs: "14rem 0 1rem 0" } }}>
         <Outlet />
       </Box>
       <Box sx={{ flexGrow: 1 }} />

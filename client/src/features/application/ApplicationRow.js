@@ -24,8 +24,8 @@ const ApplicationRow = ({ application }) => {
       <TableCell>
         <Box>
           <Box sx={{ display: "flex", marginBottom: 2 }}>
-            {candidate?.AvatarUrl ? (
-              <Avatar alt="avatar" src={candidate?.AvatarUrl} />
+            {candidate?.avatarUrl ? (
+              <Avatar alt="avatar" src={candidate.avatarUrl} />
             ) : (
               !!candidate?.name && (
                 <Avatar sx={{ bgcolor: "#ffa502" }}>
@@ -40,11 +40,15 @@ const ApplicationRow = ({ application }) => {
               {startCase(toLower(candidate?.name))}{" "}
             </Button>
           </Box>
-          {message && <Typography>Application message: {message}</Typography>}
+          {message && (
+            <Typography sx={{ maxWidth: "600px " }}>
+              <strong>Message:</strong> {message}
+            </Typography>
+          )}
         </Box>
       </TableCell>
 
-      <TableCell align="right">
+      <TableCell align="center">
         {status === "pending" ? (
           <Chip label="Waiting for response" color="warning" />
         ) : status === "approved" ? (

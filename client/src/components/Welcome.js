@@ -8,10 +8,7 @@ import WelcomeStats from "./WelcomeStats";
 const Welcome = () => {
   const theme = useTheme();
   return (
-    <Container
-      maxWidth="lg"
-      sx={{ m: "3rem auto", fontFamily: "Lato, sans-serif", lineHeight: "1.6" }}
-    >
+    <Container maxWidth="lg" sx={{ m: "3rem auto", lineHeight: "1.6" }}>
       <Box
         sx={{
           display: "flex",

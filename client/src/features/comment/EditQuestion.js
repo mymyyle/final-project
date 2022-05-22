@@ -18,7 +18,7 @@ const defaultValues = {
   content: "",
 };
 
-const EditQuestion = ({ id, setShowEdit }) => {
+const EditQuestion = ({ id, setShowEdit, content }) => {
   const methods = useForm({
     resolver: yupResolver(NewCommentSchema),
     defaultValues,
@@ -38,6 +38,7 @@ const EditQuestion = ({ id, setShowEdit }) => {
     setShowEdit(false);
     dispatch(editComment(id, data)).then(() => reset());
   };
+  console.log("content", content);
   return (
     <Container
       maxWidth="md"
@@ -59,7 +60,7 @@ const EditQuestion = ({ id, setShowEdit }) => {
           <FTextField
             name="content"
             label="Edit Question"
-            placeholder="Enter your question"
+            placeholder="Enter your new question"
             multiline
             sx={{ width: "22vw" }}
           />

@@ -115,6 +115,8 @@ commentController.replyCommentByEmployer = catchAsync(
 // 5. user can see comment (not login required)
 commentController.getAllCommentByJobId = catchAsync(async (req, res, next) => {
   const { jobId } = req.params;
+  if (!jobId)
+    throwError(404, "job not found", "get all comment by job id error");
   const job = await Job.findOne({ _id: jobId, isDeleted: false });
   if (!job) throwError(404, "job not found", "get all comment by job id error");
 

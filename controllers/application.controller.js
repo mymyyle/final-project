@@ -185,4 +185,88 @@ applicationController.getAllOwnJobApplication = catchAsync(
   }
 );
 
+applicationController.getOwnApplicationByJobId = catchAsync(
+  async (req, res, next) => {
+    const { jobId } = req.params;
+    const { currentUserId } = req;
+
+    const job = await Job.findOne({ _id: jobId, isDeleted: false });
+    if (!job)
+      throwError(
+        404,
+        "job by id not found",
+        "get own application by jobId error"
+      );
+
+    const application = await Application.findOne({
+      jobId,
+      candidateId: currentUserId,
+    });
+    console.log(`==========>`, application);
+    return sendResponse(
+      res,
+      200,
+      true,
+      application,
+      null,
+      "get own application by jobId successful"
+    );
+  }
+);
+applicationController.getAllApplication = catchAsync(async (req, res, next) => {
+  const { monthList, year = 2022 } = req.body;
+  console.log(`========>`, req.body);
+  const totalApplications = [];
+  const totalApprovedApplications = [];
+  const totalRejectedApplications = [];
+  const totalPendingApplications = [];
+
+  for (const month of monthList) {
+    if (month > 11 || month < 0)
+      throwError(
+        400,
+        "month list is incorrect",
+        "get all application by months by jobId error"
+      );
+    const fromDate = new Date(year, month, 1);
+    const toDate = new Date(fromDate.getFullYear(), fromDate.getMonth() + 1, 0);
+    const condition = { createdAt: { $gte: fromDate, $lte: toDate } };
+
+    const applications = await Application.find(condition);
+
+    const approvedApplications = await Application.find({
+      ...condition,
+      status: "approved",
+    });
+    const rejectedApplications = await Application.find({
+      ...condition,
+      status: "rejected",
+    });
+    const pendingApplications = await Application.find({
+      ...condition,
+      status: "pending",
+    });
+
+    console.log(applications.length);
+    totalApplications.push(applications.length);
+    totalApprovedApplications.push(approvedApplications.length);
+    totalRejectedApplications.push(rejectedApplications.length);
+    totalPendingApplications.push(pendingApplications.length);
+  }
+  console.log({ totalApplications });
+  return sendResponse(
+    res,
+    200,
+    true,
+    {
+      totalApplications,
+      totalApprovedApplications,
+      totalRejectedApplications,
+      totalPendingApplications,
+    },
+    null,
+    "get all application by months successful"
+  );
+});
+
 module.exports = applicationController;

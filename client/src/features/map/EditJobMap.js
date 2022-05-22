@@ -2,19 +2,19 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 
 import { getGeocode, getLatLng } from "use-places-autocomplete";
+import mapStyles from "./mapStyles";
+import { useTheme } from "@emotion/react";
+import { useMediaQuery } from "@mui/material";
 
 const libraries = ["places"]; //tranh rerender nhieu lan
 
-const mapContainerStyle = {
-  width: "30vw",
-  height: "50vh",
-};
 const center = {
   lat: 10.784154,
   lng: 106.70104,
 };
 
 const options = {
+  styles: mapStyles,
   disableDefaultUI: true,
   zoomControl: true,
 };
@@ -24,7 +24,13 @@ const EditJobMap = ({ address, setMap, map }) => {
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries,
   });
-
+  const theme = useTheme();
+  const matchesMd = useMediaQuery(theme.breakpoints.up("md"));
+  const matchesSm = useMediaQuery(theme.breakpoints.up("sm"));
+  const mapContainerStyle = {
+    width: matchesMd ? "30vw" : matchesSm ? "50vw" : "85vw",
+    height: "50vh",
+  };
   const [renderMarker, setRenderMarker] = useState(false);
   useEffect(() => {
     const timer = setTimeout(
@@ -78,7 +84,7 @@ const EditJobMap = ({ address, setMap, map }) => {
     <div>
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
-        zoom={8}
+        zoom={13}
         center={center}
         options={options}
         onClick={onMapClick}

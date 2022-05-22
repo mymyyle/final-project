@@ -50,6 +50,7 @@ const EditJobPage = () => {
   useEffect(() => {
     dispatch(getJobById(jobId));
   }, []);
+
   const [location, setLocation] = useState();
   const [district, setDistrict] = useState();
   const [districtOptions, setDistrictOptions] = useState([]);
@@ -102,7 +103,7 @@ const EditJobPage = () => {
         lat: map.lat,
       })
     );
-    navigate("/account/Opportunities");
+    navigate("/account/opportunities");
   };
 
   const handleDrop = useCallback(
@@ -137,10 +138,14 @@ const EditJobPage = () => {
               <FRadioGroup
                 name="status"
                 label="Status"
-                options={["ongoing", "Hiring Freeze"]}
+                options={["ongoing", "closed"]}
               />
             </Box>
-            <FTextField name="name" label="Job Title" />
+            <FTextField
+              name="name"
+              label="Job Title"
+              sx={{ maxWidth: "80vw" }}
+            />
 
             {dataLocation && (
               <>
@@ -160,7 +165,7 @@ const EditJobPage = () => {
                       label="Location"
                       InputProps={{
                         ...params.InputProps,
-                        style: { height: 55 },
+                        style: { height: 55, textAlign: "center" },
                       }}
                     />
                   )}
@@ -170,6 +175,7 @@ const EditJobPage = () => {
                   onInputChange={(event, newInputValue) => {
                     setDistrict(newInputValue);
                     setAddress(newInputValue + ", " + location + ", Vietnam");
+                    console.log(`address`, address);
                   }}
                   defaultValue={currentJob.district}
                   name="district"
